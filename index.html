@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>مستكشف الأرض</title>
+
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif;background:#020611;color:white}
+#globe{position:fixed;inset:0}
+
+.title{
+position:fixed;top:15px;right:20px;z-index:5;
+font-size:22px;font-weight:bold;
+}
+
+.top{
+position:fixed;top:15px;left:50%;
+transform:translateX(-50%);
+z-index:10;width:min(600px,90%);
+display:flex;gap:8px;
+}
+
+.search{position:relative;flex:1}
+
+input{
+width:100%;padding:13px 16px;
+border-radius:15px;border:1px solid #ffffff44;
+background:#071126dd;color:white;
+font-size:16px;outline:none;
+}
+
+#results{
+position:absolute;top:52px;left:0;right:0;
+background:#071126f5;border-radius:14px;
+max-height:300px;overflow:auto;display:none;
+}
+
+.result{
+padding:10px;display:flex;gap:10px;
+align-items:center;cursor:pointer;
+border-bottom:1px solid #ffffff18;
+}
+
+.result:hover{background:#ffffff18}
+
+.result img{
+width:32px;height:21px;object-fit:cover;
+}
+
+button{
+border:0;border-radius:12px;padding:11px;
+background:#168bd8;color:white;
+font-weight:bold;cursor:pointer;
+}
+
+#home{
+background:#071126dd;
+border:1px solid #ffffff44;
+font-size:20px;
+}
+
+.panel{
+position:fixed;left:15px;bottom:15px;
+z-index:10;width:min(370px,calc(100% - 30px));
+background:#071126e8;
+border:1px solid #ffffff30;
+border-radius:20px;padding:16px;
+display:none;
+backdrop-filter:blur(12px);
+}
+
+.head{
+display:flex;align-items:center;gap:12px;
+}
+
+.flag{
+width:65px;height:43px;
+object-fit:cover;border-radius:7px;
+}
+
+h2{margin:0;font-size:23px}
+.official{color:#b8ccdc;margin:4px 0}
+
+.grid{
+display:grid;grid-template-columns:1fr 1fr;
+gap:8px;margin-top:13px;
+}
+
+.cell{
+background:#ffffff0c;
+padding:9px;border-radius:11px;
+}
+
+.cell b{
+display:block;color:#63caff;
+font-size:12px;margin-bottom:4px;
+}
+
+.actions{
+display:flex;gap:8px;margin-top:12px;
+}
+
+.actions button{flex:1}
+
+.hint{
+position:fixed;right:15px;bottom:15px;
+z-index:5;background:#071126bb;
+padding:10px 14px;border-radius:12px;
+font-size:12px;color:#d7e9f7;
+}
+
+.loading{
+position:fixed;inset:0;z-index:30;
+display:flex;justify-content:center;
+align-items:center;background:#020611;
+font-size:20px;
+}
+
+@media(max-width:650px){
+.title{display:none}
+.hint{display:none}
+.top{top:10px}
+}
+</style>
+</head>
+
+<body>
+
+<div id="globe"></div>
+
+<div class="title">🌍 مستكشف الأرض</div>
+
+<div class="top">
+
+<div class="search">
+<input id="search"
+placeholder="ابحث عن دولة: سوريا، هولندا، اليابان...">
+<div id="results"></div>
+</div>
+
+<button id="home">⌂</button>
+
+</div>
+
+<div class="panel" id="panel">
+
+<div class="head">
+<img id="flag" class="flag">
+<div>
+<h2 id="countryName"></h2>
+<div id="official" class="official"></div>
+</div>
+</div>
+
+<div class="grid">
+
+<div class="cell">
+<b>العاصمة</b>
+<span id="capital"></span>
+</div>
+
+<div class="cell">
+<b>القارة</b>
+<span id="region"></span>
+</div>
+
+<div class="cell">
+<b>عدد السكان</b>
+<span id="population"></span>
+</div>
+
+<div class="cell">
+<b>المساحة</b>
+<span id="area"></span>
+</div>
+
+<div class="cell">
+<b>اللغات</b>
+<span id="languages"></span>
+</div>
+
+<div class="cell">
+<b>العملة</b>
+<span id="currency"></span>
+</div>
+
+</div>
+
+<div class="actions">
+<button id="speak">🔊 استمع</button>
+<button id="wiki">📖 ويكيبيديا</button>
+</div>
+
+</div>
+
+<div class="hint">
+اسحب لتدوير الأرض • استخدم إصبعين أو عجلة الماوس للتكبير
+</div>
+
+<div id="loading" class="loading">
+🌍 جاري تحميل كوكب الأرض...
+</div>
+
+<script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+
+<script src="https://unpkg.com/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+<script>
+
+const container =
+document.getElementById("globe");
+
+const scene = new THREE.Scene();
+
+const camera =
+new THREE.PerspectiveCamera(
+45,
+window.innerWidth/window.innerHeight,
+0.1,
+2000
+);
+
+camera.position.z=3;
+
+const renderer =
+new THREE.WebGLRenderer({
+antialias:true
+});
+
+renderer.setSize(
+window.innerWidth,
+window.innerHeight
+);
+
+renderer.setPixelRatio(
+Math.min(window.devicePixelRatio,2)
+);
+
+container.appendChild(
+renderer.domElement
+);
+
+const controls =
+new THREE.OrbitControls(
+camera,
+renderer.domElement
+);
+
+controls.enableDamping=true;
+controls.dampingFactor=0.05;
+controls.minDistance=1.5;
+controls.maxDistance=8;
+controls.autoRotate=true;
+controls.autoRotateSpeed=0.35;
+
+scene.add(
+new THREE.AmbientLight(
+0xffffff,
+0.7
+)
+);
+
+const light =
+new THREE.DirectionalLight(
+0xffffff,
+1
+);
+
+light.position.set(
+5,3,5
+);
+
+scene.add(light);
+
+/* الأرض */
+
+const loader =
+new THREE.TextureLoader();
+
+const earthTexture =
+loader.load(
+"https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg",
+()=>{
+document.getElementById("loading").style.display="none";
+}
+);
+
+const bump =
+loader.load(
+"https://threejs.org/examples/textures/planets/earth_normal_2048.jpg"
+);
+
+const specular =
+loader.load(
+"https://threejs.org/examples/textures/planets/earth_specular_2048.jpg"
+);
+
+const earth =
+new THREE.Mesh(
+new THREE.SphereGeometry(
+1,64,64
+),
+new THREE.MeshPhongMaterial({
+map:earthTexture,
+bumpMap:bump,
+bumpScale:0.04,
+specularMap:specular,
+specular:new THREE.Color("grey")
+})
+);
+
+scene.add(earth);
+
+/* الغيوم */
+
+const cloudTexture =
+loader.load(
+"https://threejs.org/examples/textures/planets/earth_clouds_1024.png"
+);
+
+const clouds =
+new THREE.Mesh(
+new THREE.SphereGeometry(
+1.008,64,64
+),
+new THREE.MeshPhongMaterial({
+map:cloudTexture,
+transparent:true,
+opacity:0.35
+})
+);
+
+scene.add(clouds);
+
+/* النجوم */
+
+const starGeometry =
+new THREE.BufferGeometry();
+
+const stars=[];
+
+for(let i=0;i<1500;i++){
+
+const x=(Math.random()-.5)*1000;
+const y=(Math.random()-.5)*1000;
+const z=(Math.random()-.5)*1000;
+
+stars.push(x,y,z);
+
+}
+
+starGeometry.setAttribute(
+"position",
+new THREE.Float32BufferAttribute(
+stars,3
+)
+);
+
+const starMaterial =
+new THREE.PointsMaterial({
+color:0xffffff,
+size:0.7
+});
+
+scene.add(
+new THREE.Points(
+starGeometry,
+starMaterial
+)
+);
+
+/* بيانات الدول */
+
+let countries=[];
+let selected=null;
+
+const arabicNames={
+SYR:"سوريا",
+NLD:"هولندا",
+EGY:"مصر",
+SAU:"السعودية",
+USA:"الولايات المتحدة",
+FRA:"فرنسا",
+DEU:"ألمانيا",
+TUR:"تركيا",
+JOR:"الأردن",
+LBN:"لبنان",
+IRQ:"العراق",
+ARE:"الإمارات",
+QAT:"قطر",
+KWT:"الكويت",
+PSE:"فلسطين",
+GBR:"المملكة المتحدة",
+ESP:"إسبانيا",
+ITA:"إيطاليا",
+JPN:"اليابان",
+CHN:"الصين",
+IND:"الهند"
+};
+
+function arabicName(c){
+
+return arabicNames[c.cca3] ||
+c.translations?.ara?.common ||
+c.name.common;
+
+}
+
+fetch(
+"https://restcountries.com/v3.1/all?fields=name,translations,cca3,capital,region,population,area,languages,currencies,flags"
+)
+
+.then(r=>r.json())
+
+.then(data=>{
+countries=data;
+})
+
+.catch(err=>{
+console.error(err);
+});
+
+/* البحث */
+
+const search =
+document.getElementById("search");
+
+const results =
+document.getElementById("results");
+
+search.addEventListener(
+"input",
+function(){
+
+const q =
+this.value.trim().toLowerCase();
+
+if(!q){
+
+results.style.display="none";
+return;
+
+}
+
+const found =
+countries.filter(c=>{
+
+const names=[
+arabicName(c),
+c.name.common,
+c.name.official
+];
+
+return names.some(
+n=>n &&
+n.toLowerCase().includes(q)
+);
+
+}).slice(0,10);
+
+results.innerHTML="";
+
+found.forEach(c=>{
+
+const item =
+document.createElement("div");
+
+item.className="result";
+
+item.innerHTML=
+`<img src="${c.flags.svg}">
+<span>${arabicName(c)} — ${c.name.common}</span>`;
+
+item.onclick=()=>showCountry(c);
+
+results.appendChild(item);
+
+});
+
+results.style.display =
+found.length ?
+"block":
+"none";
+
+}
+);
+
+/* عرض معلومات الدولة */
+
+function showCountry(c){
+
+selected=c;
+
+controls.autoRotate=false;
+
+search.value=arabicName(c);
+
+results.style.display="none";
+
+document.getElementById(
+"panel"
+).style.display="block";
+
+document.getElementById(
+"flag"
+).src=c.flags.svg;
+
+document.getElementById(
+"countryName"
+).textContent=arabicName(c);
+
+document.getElementById(
+"official"
+).textContent=
+c.translations?.ara?.official ||
+c.name.official;
+
+document.getElementById(
+"capital"
+).textContent=
+(c.capital||["—"]).join("، ");
+
+document.getElementById(
+"region"
+).textContent=
+c.region||"—";
+
+document.getElementById(
+"population"
+).textContent=
+new Intl.NumberFormat("ar")
+.format(c.population);
+
+document.getElementById(
+"area"
+).textContent=
+new Intl.NumberFormat("ar")
+.format(c.area)+" كم²";
+
+document.getElementById(
+"languages"
+).textContent=
+Object.values(
+c.languages||{}
+).join("، ") || "—";
+
+document.getElementById(
+"currency"
+).textContent=
+Object.values(
+c.currencies||{}
+)
+.map(x=>
+x.name+
+(x.symbol ?
+" ("+x.symbol+")":
+"")
+)
+.join("، ") || "—";
+
+}
+
+/* الصوت */
+
+document.getElementById(
+"speak"
+).onclick=()=>{
+
+if(!selected)return;
+
+speechSynthesis.cancel();
+
+const speech =
+new SpeechSynthesisUtterance(
+arabicName(selected)
+);
+
+speech.lang="ar";
+
+speechSynthesis.speak(
+speech
+);
+
+};
+
+/* ويكيبيديا */
+
+document.getElementById(
+"wiki"
+).onclick=()=>{
+
+if(!selected)return;
+
+window.open(
+"https://ar.wikipedia.org/wiki/"+
+encodeURIComponent(
+arabicName(selected)
+),
+"_blank"
+);
+
+};
+
+/* إعادة الأرض */
+
+document.getElementById(
+"home"
+).onclick=()=>{
+
+camera.position.set(
+0,0,3
+);
+
+controls.target.set(
+0,0,0
+);
+
+controls.autoRotate=true;
+
+document.getElementById(
+"panel"
+).style.display="none";
+
+search.value="";
+
+};
+
+/* تغيير الحجم */
+
+window.addEventListener(
+"resize",
+()=>{
+
+camera.aspect=
+window.innerWidth/
+window.innerHeight;
+
+camera.updateProjectionMatrix();
+
+renderer.setSize(
+window.innerWidth,
+window.innerHeight
+);
+
+}
+);
+
+/* الحركة */
+
+function animate(){
+
+requestAnimationFrame(
+animate
+);
+
+earth.rotation.y+=0.0004;
+
+clouds.rotation.y+=0.0006;
+
+controls.update();
+
+renderer.render(
+scene,
+camera
+);
+
+}
+
+animate();
+
+</script>
+
+</body>
+</html>
