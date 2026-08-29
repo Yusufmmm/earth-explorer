@@ -1,1097 +1,165 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Earth Explorer — مستكشف الأرض والزمن</title>
+Skip to content
+Yusufmmm
+earth-explorer
+Repository navigation
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security and quality
+Insights
+Settings
+Files
+Go to file
+t
+T
+index.html
+earth-explorer
+/
+index.html
+in
+main
 
-<style>
-*{box-sizing:border-box}
-html,body{
-  margin:0;width:100%;height:100%;overflow:hidden;
-  background:#020611;color:#fff;
-  font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif
-}
-button,input{font:inherit}
-button{cursor:pointer}
-#globe{position:fixed;inset:0}
+Edit
 
-.glass{
-  background:rgba(4,13,30,.88);
-  border:1px solid rgba(255,255,255,.16);
-  backdrop-filter:blur(14px);
-  box-shadow:0 15px 45px rgba(0,0,0,.3)
-}
+Preview
+Indent mode
 
-#brand{
-  position:fixed;z-index:20;right:16px;top:14px;
-  font-weight:900;font-size:19px
-}
-#brand small{
-  display:block;font-size:10px;color:#77d5ff
-}
+Spaces
+Indent size
 
-#topbar{
-  position:fixed;z-index:25;top:12px;left:50%;
-  transform:translateX(-50%);
-  width:min(760px,94vw);display:flex;gap:7px
-}
-#searchWrap{position:relative;flex:1}
-#search{
-  width:100%;padding:13px 15px;
-  border-radius:15px;border:1px solid #ffffff35;
-  outline:none;background:#071226e8;color:#fff
-}
-#results{
-  position:absolute;top:51px;left:0;right:0;
-  max-height:290px;overflow:auto;border-radius:15px;
-  display:none
-}
-.result{
-  display:flex;gap:10px;align-items:center;
-  padding:10px 12px;border-bottom:1px solid #ffffff12
-}
-.result:hover{background:#ffffff12}
-.result img{width:34px;height:22px;object-fit:cover;border-radius:3px}
-.small{color:#abc3d7;font-size:12px}
+2
+Line wrap mode
 
-.icon{
-  border:1px solid #ffffff30;
-  border-radius:13px;background:#071226e8;
-  color:#fff;padding:10px 13px
-}
+No wrap
+Editing index.html file contents
+Selection deleted
+962
+963
+964
+965
+966
+967
+968
+969
+970
+971
+972
+973
+974
+975
+976
+977
+978
+979
+980
+981
+982
+983
+984
+985
+986
+987
+988
+989
+990
+991
+992
+993
+994
+995
+996
+997
+998
+999
+1000
+1001
+1002
+1003
+1004
+1005
+1006
+1007
+1008
+1009
+1010
+1011
+1012
+1013
+1014
+1015
+1016
+1017
+1018
+1019
+1020
+1021
+1022
+1023
+camera.updateProjectionMatrix();
 
-#modes{
-  position:fixed;z-index:22;top:70px;left:50%;
-  transform:translateX(-50%);
-  border-radius:15px;padding:5px;
-  display:flex;gap:4px
-}
-.mode{
-  border:0;background:transparent;color:#cfe5f4;
-  padding:8px 11px;border-radius:10px;white-space:nowrap
-}
-.mode.active{background:#168ed9;color:white}
-
-#countryPanel{
-  position:fixed;z-index:30;left:13px;bottom:13px;
-  width:min(410px,calc(100vw - 26px));
-  max-height:76vh;overflow:auto;
-  border-radius:21px;padding:15px;display:none
-}
-.countryHead{display:flex;align-items:center;gap:11px}
-#flag{width:68px;height:45px;object-fit:cover;border-radius:7px}
-h2{margin:0;font-size:23px}
-
-.stats{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:7px;margin-top:12px
-}
-.stat{
-  padding:9px;border-radius:11px;background:#ffffff0b
-}
-.stat b{
-  display:block;color:#69d2ff;font-size:11px;margin-bottom:3px
-}
-
-.tabs{
-  display:flex;gap:5px;margin-top:12px;
-  overflow-x:auto;padding-bottom:3px
-}
-.tab{
-  border:0;border-radius:9px;padding:8px 10px;
-  background:#ffffff0d;color:#d8ebf8;white-space:nowrap
-}
-.tab.active{background:#168ed9;color:#fff}
-
-.tabContent{
-  margin-top:9px;padding:11px;
-  background:#ffffff08;border-radius:12px;
-  line-height:1.7
-}
-
-.actionRow{
-  display:flex;gap:6px;margin-top:10px
-}
-.actionRow button{
-  flex:1;border:0;border-radius:10px;
-  padding:9px;background:#168ed9;color:white;font-weight:700
-}
-
-#weatherBox{
-  display:none;margin-top:10px;
-  padding:11px;border-radius:12px;
-  background:linear-gradient(135deg,#168ed922,#6348e722)
-}
-#temp{font-size:29px;font-weight:900}
-
-#timelinePanel{
-  position:fixed;z-index:29;right:13px;bottom:13px;
-  width:min(420px,calc(100vw - 26px));
-  max-height:69vh;overflow:auto;
-  padding:14px;border-radius:20px;display:none
-}
-#timelinePanel h3{margin:0 0 10px}
-#timeline{width:100%}
-#yearLabel{font-weight:900;color:#6bd6ff}
-
-.event{
-  margin-top:7px;padding:10px;
-  border-radius:11px;background:#ffffff0b
-}
-.event:hover{background:#ffffff16}
-
-#storyOverlay{
-  position:fixed;inset:0;z-index:60;
-  display:none;align-items:center;justify-content:center;
-  background:rgba(0,0,0,.78);padding:20px
-}
-.storyCard{
-  width:min(700px,94vw);
-  border-radius:24px;padding:24px;
-  text-align:center;position:relative;overflow:hidden
-}
-.storyScene{
-  height:230px;border-radius:16px;
-  background:
-    radial-gradient(circle at 30% 30%,#254b73,#081322 65%);
-  display:flex;align-items:center;justify-content:center;
-  font-size:82px;margin-bottom:18px
-}
-.storyScene.animate{animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{
-  50%{transform:scale(1.025);filter:brightness(1.15)}
-}
-#storyTitle{font-size:26px;font-weight:900;margin-bottom:7px}
-#storyText{line-height:1.8;color:#d8e8f3;min-height:85px}
-.storyControls{display:flex;gap:7px;justify-content:center;margin-top:13px}
-.storyControls button{
-  border:0;border-radius:11px;padding:10px 16px;
-  background:#168ed9;color:white;font-weight:700
-}
-.storyControls .secondary{background:#ffffff18}
-
-#status{
-  position:fixed;z-index:26;bottom:13px;left:50%;
-  transform:translateX(-50%);
-  padding:8px 13px;border-radius:12px;
-  background:#071226c9;font-size:12px
-}
-
-#loading{
-  position:fixed;z-index:100;inset:0;background:#020611;
-  display:grid;place-items:center;text-align:center
-}
-.spinner{
-  width:55px;height:55px;border-radius:50%;
-  border:6px solid #ffffff20;border-top-color:#35baff;
-  animation:spin 1s linear infinite;margin:auto
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-@media(max-width:720px){
-  #brand{display:none}
-  #topbar{top:8px}
-  #modes{
-    top:65px;width:94vw;
-    overflow-x:auto;justify-content:flex-start
-  }
-  #status{display:none}
-}
-</style>
-</head>
-
-<body>
-
-<div id="globe"></div>
-
-<div id="brand">
-🌍 مستكشف الأرض والزمن
-<small>EARTH EXPLORER</small>
-</div>
-
-<div id="topbar">
-  <div id="searchWrap">
-    <input id="search" placeholder="ابحث: سوريا، هولندا، Egypt، Japan...">
-    <div id="results" class="glass"></div>
-  </div>
-  <button class="icon" id="homeBtn">⌂</button>
-</div>
-
-<div id="modes" class="glass">
-  <button class="mode active" data-mode="earth">🌍 الأرض</button>
-  <button class="mode" data-mode="weather">🌦️ الطقس</button>
-  <button class="mode" data-mode="history">🏛️ الحضارات</button>
-  <button class="mode" data-mode="dino">🦖 الديناصورات</button>
-</div>
-
-<div id="countryPanel" class="glass">
-
-  <div class="countryHead">
-    <img id="flag">
-    <div>
-      <h2 id="countryName">—</h2>
-      <div id="countryEnglish" class="small"></div>
-    </div>
-  </div>
-
-  <div class="stats">
-    <div class="stat"><b>العاصمة</b><span id="capital">—</span></div>
-    <div class="stat"><b>القارة</b><span id="region">—</span></div>
-    <div class="stat"><b>السكان</b><span id="population">—</span></div>
-    <div class="stat"><b>المساحة</b><span id="area">—</span></div>
-    <div class="stat"><b>اللغة</b><span id="language">—</span></div>
-    <div class="stat"><b>العملة</b><span id="currency">—</span></div>
-  </div>
-
-  <div class="tabs">
-    <button class="tab active" data-tab="overview">نظرة عامة</button>
-    <button class="tab" data-tab="history">التاريخ</button>
-    <button class="tab" data-tab="places">المعالم</button>
-    <button class="tab" data-tab="culture">الحضارة</button>
-  </div>
-
-  <div id="tabContent" class="tabContent"></div>
-
-  <div id="weatherBox">
-    <div class="small">🌦️ الطقس المباشر</div>
-    <div id="temp">—</div>
-    <div id="weatherText">—</div>
-    <div id="wind">—</div>
-    <div id="humidity">—</div>
-  </div>
-
-  <div class="actionRow">
-    <button id="weatherBtn">🌦️ الطقس</button>
-    <button id="storyBtn">▶ قصة تفاعلية</button>
-    <button id="speakBtn">🔊 استمع</button>
-  </div>
-
-</div>
-
-<div id="timelinePanel" class="glass">
-  <h3 id="timelineTitle">🏛️ التاريخ والحضارات</h3>
-
-  <div>
-    <span id="yearLabel">1200 م</span>
-    <input id="timeline" type="range"
-      min="-5000" max="2026" value="1200" step="25">
-  </div>
-
-  <div id="events"></div>
-</div>
-
-<div id="storyOverlay">
-  <div class="storyCard glass">
-    <div id="storyScene" class="storyScene animate">🏛️</div>
-    <div id="storyTitle"></div>
-    <div id="storyText"></div>
-
-    <div class="storyControls">
-      <button id="storyPrev" class="secondary">السابق</button>
-      <button id="storyNext">التالي</button>
-      <button id="storyClose" class="secondary">إغلاق</button>
-    </div>
-  </div>
-</div>
-
-<div id="status">اسحب الأرض • ابحث عن دولة • استكشف الزمن</div>
-
-<div id="loading">
-  <div>
-    <div class="spinner"></div>
-    <p>جاري تشغيل مستكشف الأرض...</p>
-  </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
-
-<script>
-const $ = id => document.getElementById(id);
-
-/* ===========================
-   3D EARTH
-=========================== */
-
-const scene = new THREE.Scene();
-
-const camera = new THREE.PerspectiveCamera(
-  45,
-  innerWidth / innerHeight,
-  .1,
-  2000
+renderer.setSize(
+innerWidth,
+innerHeight
 );
 
-camera.position.set(0,0,3);
+});
 
-const renderer = new THREE.WebGLRenderer({antialias:true});
-renderer.setSize(innerWidth,innerHeight);
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+/* الحركة */
 
-$("globe").appendChild(renderer.domElement);
+function anim(){
 
-const controls = new THREE.OrbitControls(camera,renderer.domElement);
-controls.enableDamping = true;
-controls.dampingFactor = .055;
-controls.minDistance = 1.42;
-controls.maxDistance = 6;
-controls.autoRotate = true;
-controls.autoRotateSpeed = .34;
+requestAnimationFrame(anim);
 
-scene.add(new THREE.AmbientLight(0xffffff,.68));
+clouds.rotation.y+=.00018;
 
-const sun = new THREE.DirectionalLight(0xffffff,1.25);
-sun.position.set(4,3,5);
-scene.add(sun);
+if(cameraMove){
 
-const group = new THREE.Group();
-scene.add(group);
-
-const loader = new THREE.TextureLoader();
-
-const earth = new THREE.Mesh(
-  new THREE.SphereGeometry(1,64,64),
-  new THREE.MeshPhongMaterial({
-    map:loader.load(
-      "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_atmos_2048.jpg"
-    ),
-    bumpMap:loader.load(
-      "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_normal_2048.jpg"
-    ),
-    bumpScale:.035,
-    specularMap:loader.load(
-      "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_specular_2048.jpg"
-    ),
-    specular:new THREE.Color(0x444444)
-  })
+const t=
+Math.min(
+(performance.now()-cameraMove.s)
+/cameraMove.d,
+1
 );
 
-group.add(earth);
+const e=
+t*t*(3-2*t);
 
-const clouds = new THREE.Mesh(
-  new THREE.SphereGeometry(1.009,64,64),
-  new THREE.MeshPhongMaterial({
-    map:loader.load(
-      "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_clouds_1024.png"
-    ),
-    transparent:true,
-    opacity:.36,
-    depthWrite:false
-  })
+camera.position.lerpVectors(
+cameraMove.a,
+cameraMove.b,
+e
 );
 
-group.add(clouds);
+camera.lookAt(0,0,0);
 
-/* نجوم */
+if(t>=1)
+cameraMove=null;
 
-const starArray=[];
-
-for(let i=0;i<1700;i++){
-  const r=100+Math.random()*450;
-  const a=Math.random()*Math.PI*2;
-  const p=Math.acos(2*Math.random()-1);
-
-  starArray.push(
-    r*Math.sin(p)*Math.cos(a),
-    r*Math.sin(p)*Math.sin(a),
-    r*Math.cos(p)
-  );
 }
 
-const starGeo=new THREE.BufferGeometry();
+controls.update();
 
-starGeo.setAttribute(
-  "position",
-  new THREE.Float32BufferAttribute(starArray,3)
+renderer.render(
+scene,
+camera
 );
 
-scene.add(
-  new THREE.Points(
-    starGeo,
-    new THREE.PointsMaterial({
-      color:0xffffff,
-      size:.14
-    })
-  )
-);
-
-/* ===========================
-   LOCATIONS
-=========================== */
-
-const markerGroup=new THREE.Group();
-group.add(markerGroup);
-
-function latLon(lat,lon,radius=1.025){
-
-  const phi=(90-lat)*Math.PI/180;
-  const theta=(lon+180)*Math.PI/180;
-
-  return new THREE.Vector3(
-    -radius*Math.sin(phi)*Math.cos(theta),
-    radius*Math.cos(phi),
-    radius*Math.sin(phi)*Math.sin(theta)
-  );
 }
 
-function clearMarkers(){
-  while(markerGroup.children.length){
-    markerGroup.remove(markerGroup.children[0]);
-  }
-}
-
-function addMarker(lat,lon,color=0xffd342,size=.022){
-
-  const marker=new THREE.Mesh(
-    new THREE.SphereGeometry(size,16,16),
-    new THREE.MeshBasicMaterial({color})
-  );
-
-  marker.position.copy(latLon(lat,lon));
-
-  markerGroup.add(marker);
-}
-
-let cameraMove=null;
-
-function flyTo(lat,lon,distance=2.05){
-
-  controls.autoRotate=false;
-
-  cameraMove={
-    from:camera.position.clone(),
-    to:latLon(lat,lon,distance),
-    start:performance.now(),
-    duration:1300
-  };
-}
-
-/* ===========================
-   COUNTRY DATABASE
-=========================== */
-
-const countries=[
-
-{
-name:"سوريا",
-english:"Syria",
-code:"sy",
-lat:35,
-lon:38,
-capital:"دمشق",
-region:"آسيا",
-population:23000000,
-area:185180,
-language:"العربية",
-currency:"الليرة السورية",
-overview:"سوريا دولة تقع في شرق البحر المتوسط، وتتميز بموقع تاريخي ربط آسيا بالبحر المتوسط وشبه الجزيرة العربية.",
-history:"تُعد المنطقة السورية من أقدم مناطق الاستيطان البشري. تعاقبت عليها حضارات وممالك كثيرة، من إبلا وأوغاريت والآراميين إلى العصور الهلنستية والرومانية والبيزنطية ثم العصور الإسلامية.",
-places:"من أبرز المواقع التاريخية: دمشق القديمة، تدمر، قلعة حلب، بصرى، أوغاريت وقلعة الحصن.",
-culture:"امتزجت في سوريا ثقافات المشرق عبر آلاف السنين، وتنوعت الموسيقى والعمارة والمطبخ واللهجات والعادات بين مناطقها.",
-story:[
-["🌄","سوريا عبر الزمن","نبدأ الرحلة في منطقة كانت منذ آلاف السنين ملتقى طرق بين حضارات الشرق والبحر المتوسط."],
-["🏺","الممالك القديمة","ظهرت مراكز حضارية مهمة مثل إبلا وأوغاريت، وازدهرت التجارة والكتابة والثقافة."],
-["🏛️","العصر الروماني","أصبحت مدن سورية عديدة مراكز مهمة في العالم الروماني، وازدهرت تدمر على طرق التجارة."],
-["🕌","العصور الإسلامية","أصبحت دمشق عاصمة للدولة الأموية ومركزًا سياسيًا وثقافيًا مهمًا."],
-["🌍","سوريا اليوم","ما زال الإرث التاريخي المتراكم ظاهرًا في المدن والمواقع الأثرية والثقافة."]
-]
-},
-
-{
-name:"هولندا",
-english:"Netherlands",
-code:"nl",
-lat:52.13,
-lon:5.29,
-capital:"أمستردام",
-region:"أوروبا",
-population:18000000,
-area:41850,
-language:"الهولندية",
-currency:"اليورو",
-overview:"هولندا دولة أوروبية منخفضة الارتفاع تشتهر بإدارة المياه والقنوات والمدن التاريخية.",
-history:"شهدت المنطقة تطورًا تجاريًا وبحريًا كبيرًا، وخاصة خلال العصر الذهبي الهولندي في القرن السابع عشر.",
-places:"أمستردام، روتردام، لاهاي، أوتريخت، طواحين كيندرديك ومناطق الزهور.",
-culture:"تشتهر بثقافة الدراجات والفنون والتجارة البحرية والهندسة المائية.",
-story:[
-["🌊","بلاد الماء","جزء مهم من تاريخ هولندا مرتبط بمقاومة البحر واستصلاح الأراضي."],
-["⛵","التجارة البحرية","تحولت هولندا إلى قوة تجارية وبحرية مؤثرة خلال القرن السابع عشر."],
-["🎨","الفنون","ظهر فنانون بارزون وازدهرت المدارس الفنية الهولندية."],
-["🚲","هولندا الحديثة","اليوم تشتهر البلاد بالتخطيط الحضري والدراجات وإدارة المياه."]
-]
-},
-
-{
-name:"مصر",
-english:"Egypt",
-code:"eg",
-lat:26.82,
-lon:30.8,
-capital:"القاهرة",
-region:"أفريقيا",
-population:110000000,
-area:1002450,
-language:"العربية",
-currency:"الجنيه المصري",
-overview:"مصر دولة تمتد حول وادي النيل، وارتبط تاريخها بالنهر منذ آلاف السنين.",
-history:"نشأت فيها واحدة من أشهر حضارات العالم القديم، واستمرت الممالك المصرية القديمة لآلاف السنين.",
-places:"أهرامات الجيزة، الأقصر، وادي الملوك، أبو سمبل، القاهرة التاريخية.",
-culture:"امتزجت الثقافة المصرية القديمة والمتوسطية والعربية والأفريقية عبر تاريخ طويل.",
-story:[
-["🌊","النيل","بدأت القصة حول نهر النيل الذي وفر الماء والتربة الخصبة."],
-["👑","الفراعنة","تطورت دولة مركزية قوية وحكمتها أسر ملكية متعاقبة."],
-["🔺","الأهرامات","شهد عصر الدولة القديمة بناء الأهرامات الكبرى."],
-["🏛️","مصر عبر العصور","تعاقبت على مصر عصور هellenستية ورومانية وإسلامية وحديثة."]
-]
-},
-
-{
-name:"العراق",
-english:"Iraq",
-code:"iq",
-lat:33.22,
-lon:43.67,
-capital:"بغداد",
-region:"آسيا",
-population:45000000,
-area:438317,
-language:"العربية والكردية",
-currency:"الدينار العراقي",
-overview:"العراق يقع في قلب بلاد الرافدين، إحدى المناطق التي شهدت نشوء المدن والكتابة والدول المبكرة.",
-history:"شهدت المنطقة حضارات سومر وأكد وبابل وآشور، ثم أصبحت بغداد لاحقًا مركزًا علميًا وثقافيًا مهمًا.",
-places:"بابل، أور، نينوى، سامراء، بغداد التاريخية.",
-culture:"يمتلك العراق إرثًا غنيًا في الشعر والموسيقى والعمارة والأدب والمطبخ.",
-story:[
-["🏺","بلاد الرافدين","بين دجلة والفرات ظهرت بعض أقدم المدن المعروفة."],
-["✍️","الكتابة","ظهرت الكتابة المسمارية وأصبحت وسيلة لتسجيل التجارة والقوانين."],
-["🏛️","بابل وآشور","ظهرت إمبراطوريات تركت آثارًا سياسية ومعمارية مهمة."],
-["📚","بغداد","في العصر العباسي أصبحت بغداد مركزًا بارزًا للعلم والترجمة والثقافة."]
-]
-},
-
-{
-name:"اليابان",
-english:"Japan",
-code:"jp",
-lat:36.2,
-lon:138.25,
-capital:"طوكيو",
-region:"آسيا",
-population:124000000,
-area:377975,
-language:"اليابانية",
-currency:"الين",
-overview:"اليابان أرخبيل في شرق آسيا يجمع بين تاريخ طويل وتقنية حديثة.",
-history:"شهدت اليابان عصور الساموراي والشوغونات ثم تحولات سياسية وصناعية كبيرة.",
-places:"طوكيو، كيوتو، أوساكا، نارا، جبل فوجي.",
-culture:"تشتهر بفنونها التقليدية والمطبخ والعمارة والأنمي والتقنية.",
-story:[
-["⛩️","اليابان القديمة","تطورت مجتمعات وجزر مترابطة بثقافة مميزة."],
-["⚔️","عصر الساموراي","أصبح المحاربون والسلالات العسكرية جزءًا أساسيًا من السياسة."],
-["🏯","الشوغونات","حكمت أنظمة عسكرية البلاد لفترات طويلة."],
-["🚄","اليابان الحديثة","تحولت اليابان إلى قوة صناعية وتقنية عالمية."]
-]
-},
-
-{
-name:"إيطاليا",
-english:"Italy",
-code:"it",
-lat:41.87,
-lon:12.56,
-capital:"روما",
-region:"أوروبا",
-population:59000000,
-area:301340,
-language:"الإيطالية",
-currency:"اليورو",
-overview:"إيطاليا تقع في جنوب أوروبا وكان لها تأثير ضخم في تاريخ البحر المتوسط.",
-history:"كانت روما مركز الإمبراطورية الرومانية، ثم أصبحت مدن إيطالية مراكز لعصر النهضة.",
-places:"روما، فلورنسا، البندقية، بومبي، الكولوسيوم.",
-culture:"الفن والعمارة والموسيقى والطعام والتصميم من أشهر عناصر الثقافة الإيطالية.",
-story:[
-["🏛️","روما","نشأت مدينة روما وتوسعت تدريجيًا."],
-["🦅","الإمبراطورية","امتدت الإمبراطورية الرومانية عبر أجزاء واسعة من أوروبا وشمال أفريقيا وآسيا."],
-["🎨","عصر النهضة","أصبحت مدن إيطالية مراكز للفن والعلم والثقافة."],
-["🇮🇹","إيطاليا الحديثة","توحّدت إيطاليا في القرن التاسع عشر."]
-]
-}
-
-];
-
-let selected=null;
-
-/* ===========================
-   SEARCH
-=========================== */
-
-function normalize(t=""){
-  return t.toLowerCase().trim();
-}
-
-function findCountries(q){
-
-  q=normalize(q);
-
-  if(!q)return [];
-
-  return countries.filter(c =>
-    normalize(c.name).includes(q) ||
-    normalize(c.english).includes(q)
-  );
-}
-
-function drawResults(list){
-
-  if(!list.length){
-    $("results").style.display="none";
-    return;
-  }
-
-  $("results").innerHTML=list.map(c=>`
-    <div class="result" data-name="${c.name}">
-      <img src="https://flagcdn.com/${c.code}.svg">
-      <div>
-        <b>${c.name}</b>
-        <div class="small">${c.english}</div>
-      </div>
-    </div>
-  `).join("");
-
-  $("results").style.display="block";
-}
-
-$("search").addEventListener("input",e=>{
-  drawResults(findCountries(e.target.value));
-});
-
-$("search").addEventListener("keydown",e=>{
-  if(e.key==="Enter"){
-    const result=findCountries($("search").value)[0];
-    if(result)selectCountry(result);
-  }
-});
-
-$("results").addEventListener("click",e=>{
-  const row=e.target.closest(".result");
-  if(!row)return;
-
-  const c=countries.find(x=>x.name===row.dataset.name);
-  selectCountry(c);
-});
-
-/* ===========================
-   COUNTRY PANEL
-=========================== */
-
-function selectCountry(c){
-
-  selected=c;
-
-  $("results").style.display="none";
-  $("search").value=c.name;
-
-  clearMarkers();
-  addMarker(c.lat,c.lon);
-  flyTo(c.lat,c.lon);
-
-  $("countryPanel").style.display="block";
-
-  $("flag").src=`https://flagcdn.com/${c.code}.svg`;
-  $("countryName").textContent=c.name;
-  $("countryEnglish").textContent=c.english;
-  $("capital").textContent=c.capital;
-  $("region").textContent=c.region;
-  $("population").textContent=
-    new Intl.NumberFormat("ar").format(c.population);
-  $("area").textContent=
-    new Intl.NumberFormat("ar").format(c.area)+" كم²";
-  $("language").textContent=c.language;
-  $("currency").textContent=c.currency;
-
-  $("weatherBox").style.display="none";
-
-  openTab("overview");
-
-  $("status").textContent="📍 "+c.name;
-}
-
-function openTab(tab){
-
-  document.querySelectorAll(".tab").forEach(x=>
-    x.classList.toggle("active",x.dataset.tab===tab)
-  );
-
-  if(!selected)return;
-
-  const map={
-    overview:selected.overview,
-    history:selected.history,
-    places:selected.places,
-    culture:selected.culture
-  };
-
-  $("tabContent").textContent=map[tab] || "";
-}
-
-document.querySelectorAll(".tab").forEach(btn=>{
-  btn.addEventListener("click",()=>openTab(btn.dataset.tab));
-});
-
-/* ===========================
-   WEATHER
-=========================== */
-
-function weatherText(code){
-  if(code===0)return "سماء صافية ☀️";
-  if(code<=3)return "غيوم جزئية 🌤️";
-  if(code<=48)return "ضباب 🌫️";
-  if(code<=65)return "مطر 🌧️";
-  if(code<=75)return "ثلوج ❄️";
-  if(code<=82)return "زخات 🌦️";
-  if(code>=95)return "عاصفة رعدية ⛈️";
-  return "طقس متغير";
-}
-
-async function loadWeather(){
-
-  if(!selected)return;
-
-  $("weatherBox").style.display="block";
-  $("temp").textContent="جاري التحميل...";
-
-  try{
-
-    const url=
-    `https://api.open-meteo.com/v1/forecast?latitude=${selected.lat}&longitude=${selected.lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`;
-
-    const r=await fetch(url);
-    const d=await r.json();
-    const w=d.current;
-
-    $("temp").textContent=Math.round(w.temperature_2m)+"°C";
-    $("weatherText").textContent=weatherText(w.weather_code);
-    $("wind").textContent="💨 الرياح: "+Math.round(w.wind_speed_10m)+" كم/س";
-    $("humidity").textContent="💧 الرطوبة: "+w.relative_humidity_2m+"%";
-
-  }catch(e){
-    $("temp").textContent="تعذر تحميل الطقس";
-  }
-}
-
-$("weatherBtn").onclick=loadWeather;
-
-/* ===========================
-   SPEECH
-=========================== */
-
-$("speakBtn").onclick=()=>{
-
-  if(!selected)return;
-
-  speechSynthesis.cancel();
-
-  const s=new SpeechSynthesisUtterance(
-    selected.name+". "+selected.overview
-  );
-
-  s.lang="ar";
-
-  speechSynthesis.speak(s);
-};
-
-/* ===========================
-   INTERACTIVE STORY
-=========================== */
-
-let storyIndex=0;
-
-function showStory(){
-
-  if(!selected)return;
-
-  storyIndex=0;
-  $("storyOverlay").style.display="flex";
-
-  renderStory();
-}
-
-function renderStory(){
-
-  const slide=selected.story[storyIndex];
-
-  $("storyScene").textContent=slide[0];
-  $("storyTitle").textContent=slide[1];
-  $("storyText").textContent=slide[2];
-
-  $("storyPrev").disabled=storyIndex===0;
-
-  $("storyNext").textContent=
-    storyIndex===selected.story.length-1
-    ?"إعادة"
-    :"التالي";
-}
-
-$("storyBtn").onclick=showStory;
-
-$("storyNext").onclick=()=>{
-
-  if(storyIndex===selected.story.length-1){
-    storyIndex=0;
-  }else{
-    storyIndex++;
-  }
-
-  renderStory();
-};
-
-$("storyPrev").onclick=()=>{
-  if(storyIndex>0){
-    storyIndex--;
-    renderStory();
-  }
-};
-
-$("storyClose").onclick=()=>{
-  $("storyOverlay").style.display="none";
-};
-
-/* ===========================
-   HISTORY
-=========================== */
-
-const historyEvents=[
-
-{year:-3100,name:"توحيد مصر القديمة",lat:30,lon:31,text:"بداية عصر الأسرات المبكرة في مصر."},
-{year:-2600,name:"بناء أهرامات الجيزة",lat:29.98,lon:31.13,text:"عصر بناء الأهرامات الكبرى."},
-{year:-1750,name:"بابل القديمة",lat:32.54,lon:44.42,text:"ازدهار بابل في بلاد الرافدين."},
-{year:-500,name:"أثينا الكلاسيكية",lat:37.98,lon:23.72,text:"ازدهار الثقافة والفلسفة اليونانية."},
-{year:117,name:"ذروة الإمبراطورية الرومانية",lat:41.9,lon:12.5,text:"بلغت روما أحد أكبر امتداداتها."},
-{year:622,name:"الهجرة إلى المدينة",lat:24.47,lon:39.61,text:"حدث محوري في التاريخ الإسلامي."},
-{year:762,name:"تأسيس بغداد",lat:33.31,lon:44.36,text:"أصبحت بغداد لاحقًا مركزًا مهمًا للعلم والثقافة."},
-{year:1099,name:"الحروب الصليبية",lat:31.77,lon:35.21,text:"مرحلة طويلة من الصراعات في شرق المتوسط."},
-{year:1258,name:"سقوط بغداد بيد المغول",lat:33.31,lon:44.36,text:"دخلت قوات المغول بغداد."},
-{year:1453,name:"فتح القسطنطينية",lat:41.01,lon:28.97,text:"أصبحت المدينة تحت الحكم العثماني."},
-{year:1789,name:"الثورة الفرنسية",lat:48.85,lon:2.35,text:"حدث سياسي غيّر تاريخ أوروبا."},
-{year:1914,name:"الحرب العالمية الأولى",lat:48.2,lon:16.37,text:"بداية حرب عالمية واسعة."},
-{year:1939,name:"الحرب العالمية الثانية",lat:52.23,lon:21.01,text:"اندلاع الحرب في أوروبا."},
-{year:1969,name:"الإنسان على القمر",lat:28.57,lon:-80.65,text:"مهمة أبولو 11."}
-
-];
-
-function yearName(y){
-  return y<0 ? Math.abs(y)+" ق.م" : y+" م";
-}
-
-function drawTimeline(){
-
-  const y=Number($("timeline").value);
-
-  $("yearLabel").textContent=yearName(y);
-
-  const matches=historyEvents
-    .filter(e=>Math.abs(e.year-y)<=350)
-    .sort((a,b)=>Math.abs(a.year-y)-Math.abs(b.year-y));
-
-  $("events").innerHTML=
-    matches.length
-    ?matches.map(e=>`
-      <div class="event" data-lat="${e.lat}" data-lon="${e.lon}">
-        <b>${yearName(e.year)} — ${e.name}</b>
-        <div class="small">${e.text}</div>
-      </div>
-    `).join("")
-    :`<div class="event">حرّك الخط الزمني لاكتشاف أحداث أخرى.</div>`;
-}
-
-$("timeline").oninput=drawTimeline;
-
-$("events").onclick=e=>{
-
-  const item=e.target.closest(".event");
-
-  if(!item)return;
-
-  const lat=Number(item.dataset.lat);
-  const lon=Number(item.dataset.lon);
-
-  if(Number.isFinite(lat)&&Number.isFinite(lon)){
-
-    clearMarkers();
-    addMarker(lat,lon,0xffa52e);
-    flyTo(lat,lon,2.1);
-  }
-};
-
-/* ===========================
-   DINOSAURS
-=========================== */
-
-const dinosaurs=[
-
-["تي ركس","Tyrannosaurus rex","قبل 68–66 مليون سنة",46,-106],
-["فيلوسيرابتور","Velociraptor","قبل نحو 75 مليون سنة",43,104],
-["سبينوصور","Spinosaurus","قبل نحو 100 مليون سنة",30,-4],
-["ستيغوصور","Stegosaurus","قبل نحو 150 مليون سنة",39.5,-105],
-["براكيوصور","Brachiosaurus","قبل نحو 150 مليون سنة",40,-108]
-
-];
-
-/* ===========================
-   MODES
-=========================== */
-
-document.querySelectorAll(".mode").forEach(btn=>{
-
-  btn.onclick=()=>{
-
-    document.querySelectorAll(".mode").forEach(x=>
-      x.classList.remove("active")
-    );
-
-    btn.classList.add("active");
-
-    const mode=btn.dataset.mode;
-
-    $("timelinePanel").style.display="none";
-
-    if(mode==="earth"){
-      clearMarkers();
-      controls.autoRotate=true;
-    }
-
-    if(mode==="weather"){
-      if(selected)loadWeather();
-      else $("status").textContent="اختر دولة أولًا";
-    }
-
-    if(mode==="history"){
-
-      $("timelinePanel").style.display="block";
-      $("timelineTitle").textContent="🏛️ الحضارات والتاريخ";
-
-      $("timeline").style.display="block";
-      $("yearLabel").style.display="inline";
-      $("timeline").min=-5000;
-      $("timeline").max=2026;
-      $("timeline").step=25;
-      $("timeline").value=1200;
-
-      drawTimeline();
-
-      clearMarkers();
-
-      historyEvents.forEach(e=>
-        addMarker(e.lat,e.lon,0xffa52e,.015)
-      );
-    }
-
-    if(mode==="dino"){
-
-      $("timelinePanel").style.display="block";
-      $("timelineTitle").textContent="🦖 عالم الديناصورات";
-
-      $("timeline").style.display="none";
-      $("yearLabel").style.display="none";
-
-      $("events").innerHTML=dinosaurs.map(d=>`
-        <div class="event" data-lat="${d[3]}" data-lon="${d[4]}">
-          <b>🦖 ${d[0]}</b>
-          <div>${d[1]}</div>
-          <div class="small">${d[2]}</div>
-        </div>
-      `).join("");
-
-      clearMarkers();
-
-      dinosaurs.forEach(d=>
-        addMarker(d[3],d[4],0xff5050,.017)
-      );
-    }
-  };
-});
-
-/* ===========================
-   HOME
-=========================== */
-
-$("homeBtn").onclick=()=>{
-
-  cameraMove=null;
-
-  camera.position.set(0,0,3);
-  controls.target.set(0,0,0);
-  controls.autoRotate=true;
-
-  $("countryPanel").style.display="none";
-  $("timelinePanel").style.display="none";
-  $("search").value="";
-
-  clearMarkers();
-};
-
-/* ===========================
-   RESIZE
-=========================== */
-
-addEventListener("resize",()=>{
-
-  camera.aspect=innerWidth/innerHeight;
-  camera.updateProjectionMatrix();
-
-  renderer.setSize(innerWidth,innerHeight);
-});
-
-/* ===========================
-   ANIMATION
-=========================== */
-
-function animate(){
-
-  requestAnimationFrame(animate);
-
-  clouds.rotation.y+=.00018;
-
-  if(cameraMove){
-
-    const t=Math.min(
-      (performance.now()-cameraMove.start)/
-      cameraMove.duration,
-      1
-    );
-
-    const smooth=t*t*(3-2*t);
-
-    camera.position.lerpVectors(
-      cameraMove.from,
-      cameraMove.to,
-      smooth
-    );
-
-    camera.lookAt(0,0,0);
-
-    if(t>=1)cameraMove=null;
-  }
-
-  controls.update();
-
-  renderer.render(scene,camera);
-}
-
-animate();
+anim();
 
 setTimeout(()=>{
 
-  $("loading").style.opacity="0";
+$('loading').style.display='none';
 
-  setTimeout(()=>{
-    $("loading").style.display="none";
-  },500);
-
-},1800);
+},1600);
 
 </script>
-
 </body>
 </html>
+Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+Editing earth-explorer/index.html at main · Yusufmmm/earth-explorer
+انتقل إلى المحتوى Yusufmmm Earth-explorer مستودع التنقل رمز المشكلات طلبات السحب الإجراءات المشروعات Wiki الأمان والجودة إعدادات الرؤى الملفات t T Index.html Earth-Explorer / بشكل رئيسي تحرير معاينة وضع المسافة البادئة حجم المسافة البادئة وضع التفاف الخط تحرير محتويات ملف Index.html تم حذف التحديد 962 963 964 965 966 967 968 969 970 971 972 973 974 975 976 977 978 979 980 981 982 983 984 985 986 987 988 989 990 991 992 993 994 995 996 997 998 999 1000 1001 1002 1003 1004 1005 1006 1007 1008 1009 1010 1011 1012 1013 1014 1015 1016 1017 1018 1019 1020 1021 1022 1023 image.updateProjectionMatrix(); renderer.setSize(innerWidth,InnerHeight); }); /*حركة */ function anim(){ requestAnimationFrame(anim); clouds.rotation.y+=.00018; if(cameraMove){ const t= Math.min( (performance.now()-cameraMove.s) /cameraMove.d, 1 ); const e= t*t*(3-2*t); Camera.position.lerpVectors(cameraMove.a,cameraMove.b,e ); الكاميرا.lookAt(0,0,0); if(t>=1) CameraMove=null; } controls.update(); renderer.render(المشهد، الكاميرا)؛ } أنيم(); setTimeout(()=>{ $('loading').style.display='none'; },1600); </script> </body> </html> استخدم Control + Shift + m لتبديل التركيز على مفتاح tab. وبدلاً من ذلك، استخدم esc ثم tab للانتقال إلى العنصر التفاعلي التالي في الصفحة.
