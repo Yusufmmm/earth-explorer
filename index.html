@@ -3,176 +3,216 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#020611">
-<title>Earth Explorer — مستكشف الأرض والزمن</title>
+<title>مستكشف الأرض والزمن</title>
 
 <style>
 *{box-sizing:border-box}
 html,body{
-  margin:0;width:100%;height:100%;overflow:hidden;
-  font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;
-  background:#020611;color:#fff
+margin:0;width:100%;height:100%;overflow:hidden;
+background:#020611;color:#fff;
+font-family:Arial,Tahoma,sans-serif
 }
-
-button,input,select{font:inherit}
-#globe{position:fixed;inset:0;z-index:1}
+#globe{position:fixed;inset:0}
 
 .glass{
-  background:rgba(5,15,35,.82);
-  border:1px solid rgba(255,255,255,.16);
-  backdrop-filter:blur(14px);
-  box-shadow:0 12px 40px rgba(0,0,0,.35)
+background:rgba(5,15,35,.86);
+border:1px solid rgba(255,255,255,.18);
+backdrop-filter:blur(12px)
 }
 
-#brand{
-  position:fixed;right:18px;top:15px;z-index:8;
-  font-size:21px;font-weight:900;text-shadow:0 2px 12px #000
+#title{
+position:fixed;top:14px;right:17px;z-index:20;
+font-size:20px;font-weight:bold
 }
-#brand small{display:block;color:#76d6ff;font-size:11px}
 
-#topbar{
-  position:fixed;z-index:10;top:12px;left:50%;
-  transform:translateX(-50%);
-  width:min(780px,94vw);display:flex;gap:7px
+#top{
+position:fixed;z-index:20;top:12px;left:50%;
+transform:translateX(-50%);
+width:min(720px,94%);
+display:flex;gap:7px
 }
 
 #searchWrap{flex:1;position:relative}
+
 #search{
-  width:100%;padding:13px 15px;border-radius:15px;
-  border:1px solid rgba(255,255,255,.22);
-  background:rgba(5,15,35,.88);color:white;outline:none
+width:100%;padding:13px 15px;
+border-radius:15px;border:1px solid #ffffff44;
+background:#071126ee;color:white;
+outline:none;font-size:15px
 }
 
 #results{
-  position:absolute;top:51px;left:0;right:0;
-  border-radius:15px;overflow:auto;max-height:320px;
-  display:none;z-index:20
+position:absolute;top:52px;left:0;right:0;
+max-height:300px;overflow:auto;
+border-radius:14px;display:none
 }
+
 .result{
-  padding:10px 12px;display:flex;gap:10px;align-items:center;
-  cursor:pointer;border-bottom:1px solid rgba(255,255,255,.08)
+padding:10px;cursor:pointer;
+border-bottom:1px solid #ffffff16;
+display:flex;gap:10px;align-items:center
 }
-.result:hover{background:rgba(255,255,255,.08)}
-.result img{width:34px;height:22px;object-fit:cover;border-radius:3px}
+
+.result:hover{background:#ffffff16}
+
+.result img{
+width:32px;height:21px;
+object-fit:cover;border-radius:3px
+}
 
 .icon{
-  border:1px solid rgba(255,255,255,.2);
-  border-radius:13px;padding:11px 13px;color:#fff;
-  background:rgba(5,15,35,.88);cursor:pointer
+border:1px solid #ffffff33;
+background:#071126ee;color:white;
+border-radius:13px;padding:11px;
+cursor:pointer
 }
 
-#modebar{
-  position:fixed;z-index:9;top:72px;left:50%;
-  transform:translateX(-50%);
-  display:flex;gap:6px;padding:6px;border-radius:15px
+#modes{
+position:fixed;z-index:18;
+top:70px;left:50%;
+transform:translateX(-50%);
+display:flex;gap:5px;padding:6px;
+border-radius:15px
 }
+
 .mode{
-  border:0;border-radius:10px;padding:8px 12px;
-  background:transparent;color:#cfeaff;cursor:pointer
-}
-.mode.active{background:#168dd8;color:#fff}
-
-#sidePanel{
-  position:fixed;z-index:12;left:14px;bottom:14px;
-  width:min(390px,calc(100vw - 28px));
-  border-radius:21px;padding:15px;display:none;
-  max-height:70vh;overflow:auto
+border:0;background:transparent;
+color:#d5ebf8;padding:8px 11px;
+border-radius:10px;cursor:pointer
 }
 
-.head{display:flex;gap:12px;align-items:center}
-.flag{width:68px;height:45px;object-fit:cover;border-radius:7px}
-h2{margin:0;font-size:22px}
-.muted{color:#aac4d7;font-size:13px;margin-top:3px}
+.mode.active{
+background:#168ed9;color:white
+}
+
+#info{
+position:fixed;z-index:25;
+left:14px;bottom:14px;
+width:min(390px,calc(100% - 28px));
+max-height:72vh;overflow:auto;
+padding:15px;border-radius:20px;
+display:none
+}
+
+.head{
+display:flex;align-items:center;gap:11px
+}
+
+#flag{
+width:67px;height:44px;
+object-fit:cover;border-radius:6px
+}
+
+h2{margin:0}
+.small{font-size:12px;color:#afc8d9}
 
 .grid{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:8px;margin-top:12px
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;margin-top:12px
 }
+
 .card{
-  background:rgba(255,255,255,.06);
-  padding:9px;border-radius:11px
+padding:9px;border-radius:11px;
+background:#ffffff0c
 }
+
 .card b{
-  color:#6bd4ff;font-size:11px;display:block;margin-bottom:3px
+display:block;
+font-size:11px;
+color:#6ed4ff;
+margin-bottom:3px
 }
 
-.actions{display:flex;gap:7px;margin-top:11px}
+.actions{
+display:flex;gap:6px;margin-top:11px
+}
+
 .actions button{
-  flex:1;border:0;border-radius:11px;padding:9px;
-  background:#168dd8;color:white;font-weight:700;cursor:pointer
+flex:1;border:0;
+background:#168ed9;color:white;
+border-radius:10px;padding:9px;
+cursor:pointer
 }
 
-#weatherBox{
-  margin-top:11px;padding:11px;border-radius:13px;
-  background:linear-gradient(135deg,rgba(0,131,210,.18),rgba(86,77,255,.15));
-  display:none
+#weather{
+display:none;
+margin-top:11px;
+padding:11px;
+border-radius:12px;
+background:#168ed922
 }
-#weatherBig{font-size:27px;font-weight:900}
-.weatherRow{display:flex;justify-content:space-between;gap:10px;margin-top:5px}
 
-#timelinePanel{
-  position:fixed;z-index:11;right:14px;bottom:14px;
-  width:min(420px,calc(100vw - 28px));
-  border-radius:20px;padding:14px;display:none;
-  max-height:65vh;overflow:auto
+#temp{
+font-size:28px;
+font-weight:bold
 }
-#timelinePanel h3{margin:0 0 8px}
 
-.yearRow{display:flex;gap:8px;align-items:center;margin-bottom:8px}
-#year{
-  flex:1;accent-color:#31b8ff
+#history{
+position:fixed;z-index:24;
+right:14px;bottom:14px;
+width:min(420px,calc(100% - 28px));
+max-height:65vh;overflow:auto;
+padding:14px;border-radius:20px;
+display:none
 }
-#yearLabel{
-  min-width:90px;text-align:center;font-weight:800;color:#73d4ff
+
+#history h3{margin:0 0 10px}
+
+#timeline{
+width:100%
+}
+
+#yearText{
+color:#68d4ff;font-weight:bold
 }
 
 .event{
-  padding:10px;border-radius:12px;
-  background:rgba(255,255,255,.055);
-  margin-top:7px;cursor:pointer
-}
-.event:hover{background:rgba(255,255,255,.1)}
-.event strong{color:#71d4ff}
-
-#legend{
-  position:fixed;z-index:8;right:14px;bottom:14px;
-  padding:9px 12px;border-radius:13px;font-size:12px;color:#d6e8f5
+padding:10px;margin-top:7px;
+border-radius:11px;
+background:#ffffff0c;
+cursor:pointer
 }
 
-.dot{
-  display:inline-block;width:9px;height:9px;border-radius:50%;
-  margin-left:4px
-}
+.event:hover{background:#ffffff18}
 
-#toast{
-  position:fixed;z-index:30;left:50%;bottom:22px;
-  transform:translateX(-50%) translateY(80px);
-  padding:10px 15px;border-radius:12px;
-  background:#07152a;color:#fff;
-  transition:.3s;opacity:0;pointer-events:none
+#status{
+position:fixed;z-index:30;
+left:50%;bottom:15px;
+transform:translateX(-50%);
+padding:8px 13px;
+border-radius:12px;
+background:#071126dd;
+font-size:12px
 }
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 #loading{
-  position:fixed;z-index:50;inset:0;background:#020611;
-  display:grid;place-items:center;text-align:center
+position:fixed;inset:0;z-index:100;
+display:flex;align-items:center;justify-content:center;
+background:#020611;
+transition:.5s
 }
-.spinner{
-  width:55px;height:55px;border-radius:50%;
-  border:6px solid rgba(255,255,255,.12);
-  border-top-color:#35b9ff;
-  animation:spin 1s linear infinite;margin:auto
-}
-@keyframes spin{to{transform:rotate(360deg)}}
 
-@media(max-width:720px){
-  #brand{display:none}
-  #topbar{top:8px}
-  #modebar{top:66px;width:94vw;overflow-x:auto;justify-content:flex-start}
-  .mode{white-space:nowrap}
-  #legend{display:none}
-  #timelinePanel{left:14px;right:14px;width:auto;bottom:12px}
-  #sidePanel{bottom:12px}
+.spinner{
+width:55px;height:55px;
+border-radius:50%;
+border:6px solid #ffffff20;
+border-top-color:#34baff;
+animation:spin 1s linear infinite;
+margin:auto
+}
+
+@keyframes spin{
+to{transform:rotate(360deg)}
+}
+
+@media(max-width:700px){
+#title{display:none}
+#modes{
+width:95%;overflow-x:auto;
+justify-content:flex-start
+}
+.mode{white-space:nowrap}
 }
 </style>
 </head>
@@ -181,1117 +221,1767 @@ h2{margin:0;font-size:22px}
 
 <div id="globe"></div>
 
-<div id="brand">
-🌍 مستكشف الأرض والزمن
-<small>EARTH • WEATHER • HISTORY • LIFE</small>
+<div id="title">🌍 مستكشف الأرض والزمن</div>
+
+<div id="top">
+
+<div id="searchWrap">
+<input id="search"
+placeholder="ابحث عن دولة: سوريا، هولندا، اليابان...">
+<div id="results" class="glass"></div>
 </div>
 
-<div id="topbar">
-  <div id="searchWrap">
-    <input id="search" autocomplete="off"
-      placeholder="ابحث: سوريا، هولندا، Japan، Egypt...">
-    <div id="results" class="glass"></div>
-  </div>
+<button class="icon" id="home">⌂</button>
 
-  <button class="icon" id="homeBtn" title="إعادة الضبط">⌂</button>
-  <button class="icon" id="soundBtn" title="الصوت">🔊</button>
 </div>
 
-<div id="modebar" class="glass">
-  <button class="mode active" data-mode="today">🌍 اليوم</button>
-  <button class="mode" data-mode="history">🏛️ الحضارات</button>
-  <button class="mode" data-mode="dinosaurs">🦖 الديناصورات</button>
-  <button class="mode" data-mode="weather">🌦️ الطقس</button>
+<div id="modes" class="glass">
+<button class="mode active" data-mode="earth">🌍 الأرض</button>
+<button class="mode" data-mode="weather">🌦️ الطقس</button>
+<button class="mode" data-mode="history">🏛️ الحضارات</button>
+<button class="mode" data-mode="dino">🦖 الديناصورات</button>
 </div>
 
-<div id="sidePanel" class="glass">
-  <div class="head">
-    <img id="flag" class="flag">
-    <div>
-      <h2 id="countryName">—</h2>
-      <div id="official" class="muted"></div>
-    </div>
-  </div>
+<div id="info" class="glass">
 
-  <div class="grid">
-    <div class="card"><b>العاصمة</b><span id="capital">—</span></div>
-    <div class="card"><b>القارة</b><span id="region">—</span></div>
-    <div class="card"><b>السكان</b><span id="population">—</span></div>
-    <div class="card"><b>المساحة</b><span id="area">—</span></div>
-    <div class="card"><b>اللغات</b><span id="languages">—</span></div>
-    <div class="card"><b>العملة</b><span id="currency">—</span></div>
-  </div>
-
-  <div id="weatherBox">
-    <b>الطقس المباشر الآن</b>
-    <div id="weatherBig">—</div>
-    <div class="weatherRow">
-      <span id="weatherDesc">—</span>
-      <span id="wind">—</span>
-    </div>
-    <div class="weatherRow">
-      <span id="humidity">—</span>
-      <span id="updated">—</span>
-    </div>
-  </div>
-
-  <div class="actions">
-    <button id="weatherBtn">🌦️ الطقس</button>
-    <button id="speakBtn">🔊 استمع</button>
-    <button id="wikiBtn">📖 ويكيبيديا</button>
-  </div>
+<div class="head">
+<img id="flag">
+<div>
+<h2 id="name">—</h2>
+<div id="official" class="small"></div>
+</div>
 </div>
 
-<div id="timelinePanel" class="glass">
-  <h3 id="timelineTitle">🏛️ استكشف التاريخ</h3>
+<div class="grid">
 
-  <div class="yearRow">
-    <input id="year" type="range" min="-10000" max="2026" value="1200" step="25">
-    <span id="yearLabel">1200 م</span>
-  </div>
-
-  <div class="muted">
-    حرّك الخط الزمني ثم اضغط على حدث للانتقال إلى موقعه على الأرض.
-  </div>
-
-  <div id="events"></div>
+<div class="card">
+<b>العاصمة</b>
+<span id="capital">—</span>
 </div>
 
-<div id="legend" class="glass">
-  اسحب للتدوير • عجلة الماوس للتكبير • اختر دولة من البحث
+<div class="card">
+<b>القارة</b>
+<span id="region">—</span>
 </div>
 
-<div id="toast"></div>
+<div class="card">
+<b>السكان</b>
+<span id="population">—</span>
+</div>
+
+<div class="card">
+<b>المساحة</b>
+<span id="area">—</span>
+</div>
+
+<div class="card">
+<b>اللغات</b>
+<span id="languages">—</span>
+</div>
+
+<div class="card">
+<b>العملة</b>
+<span id="currency">—</span>
+</div>
+
+</div>
+
+<div id="weather">
+<div class="small">🌦️ الطقس المباشر</div>
+<div id="temp">—</div>
+<div id="weatherText">—</div>
+<div id="wind">—</div>
+<div id="humidity">—</div>
+</div>
+
+<div class="actions">
+<button id="weatherButton">🌦️ الطقس</button>
+<button id="speak">🔊 استمع</button>
+<button id="wiki">📖 معلومات</button>
+</div>
+
+</div>
+
+<div id="history" class="glass">
+
+<h3 id="historyTitle">🏛️ التاريخ</h3>
+
+<div>
+<span id="yearText">1200 م</span>
+<input id="timeline"
+type="range"
+min="-10000"
+max="2026"
+value="1200"
+step="50">
+</div>
+
+<div id="events"></div>
+
+</div>
+
+<div id="status">
+اسحب الأرض • كبّر وصغّر • ابحث عن أي دولة
+</div>
 
 <div id="loading">
-  <div>
-    <div class="spinner"></div>
-    <h3>جاري تشغيل مستكشف الأرض...</h3>
-    <div class="muted">تحميل الأرض والدول والحضارات</div>
-  </div>
+
+<div>
+<div class="spinner"></div>
+<p>جاري تشغيل مستكشف الأرض...</p>
+</div>
+
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 
 <script>
-/* =====================================================
-   EARTH EXPLORER — نسخة مستقرة خفيفة لـ GitHub Pages
-===================================================== */
 
-const $ = id => document.getElementById(id);
+/* =========================
+   إعداد المشهد
+========================= */
 
-let soundEnabled = true;
-let countries = [];
-let selectedCountry = null;
-let currentMode = "today";
-let focusAnimation = null;
+const $=x=>document.getElementById(x);
 
-/* ---------- THREE.JS ---------- */
+const scene=new THREE.Scene();
 
-const scene = new THREE.Scene();
-
-const camera = new THREE.PerspectiveCamera(
-  45,
-  innerWidth / innerHeight,
-  0.1,
-  2000
+const camera=
+new THREE.PerspectiveCamera(
+45,
+innerWidth/innerHeight,
+.1,
+2000
 );
 
 camera.position.set(0,0,3);
 
-const renderer = new THREE.WebGLRenderer({
-  antialias:true,
-  alpha:false
+const renderer=
+new THREE.WebGLRenderer({
+antialias:true
 });
 
-renderer.setSize(innerWidth,innerHeight);
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.setSize(
+innerWidth,
+innerHeight
+);
 
-$("globe").appendChild(renderer.domElement);
+renderer.setPixelRatio(
+Math.min(devicePixelRatio,2)
+);
 
-const controls = new THREE.OrbitControls(camera,renderer.domElement);
+$("globe").appendChild(
+renderer.domElement
+);
 
-controls.enableDamping = true;
-controls.dampingFactor = .055;
-controls.minDistance = 1.42;
-controls.maxDistance = 6;
-controls.autoRotate = true;
-controls.autoRotateSpeed = .36;
+const controls=
+new THREE.OrbitControls(
+camera,
+renderer.domElement
+);
 
-/* ---------- LIGHT ---------- */
+controls.enableDamping=true;
+controls.dampingFactor=.055;
 
-scene.add(new THREE.AmbientLight(0xffffff,.62));
+controls.minDistance=1.4;
+controls.maxDistance=6;
 
-const sun = new THREE.DirectionalLight(0xffffff,1.25);
-sun.position.set(4,2,5);
+controls.autoRotate=true;
+controls.autoRotateSpeed=.35;
+
+/* =========================
+   إضاءة
+========================= */
+
+scene.add(
+new THREE.AmbientLight(
+0xffffff,
+.65
+)
+);
+
+const sun=
+new THREE.DirectionalLight(
+0xffffff,
+1.25
+);
+
+sun.position.set(
+4,3,5
+);
+
 scene.add(sun);
 
-/* ---------- EARTH GROUP ---------- */
+/* =========================
+   الأرض
+========================= */
 
-const earthGroup = new THREE.Group();
-scene.add(earthGroup);
+const earthGroup=
+new THREE.Group();
 
-const textureLoader = new THREE.TextureLoader();
-
-const earthTexture = textureLoader.load(
-  "https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg"
+scene.add(
+earthGroup
 );
 
-const normalTexture = textureLoader.load(
-  "https://threejs.org/examples/textures/planets/earth_normal_2048.jpg"
+const loader=
+new THREE.TextureLoader();
+
+const earthMap=
+loader.load(
+"https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_atmos_2048.jpg"
 );
 
-const specularTexture = textureLoader.load(
-  "https://threejs.org/examples/textures/planets/earth_specular_2048.jpg"
+const normalMap=
+loader.load(
+"https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_normal_2048.jpg"
 );
 
-const earth = new THREE.Mesh(
-  new THREE.SphereGeometry(1,64,64),
-  new THREE.MeshPhongMaterial({
-    map:earthTexture,
-    bumpMap:normalTexture,
-    bumpScale:.035,
-    specularMap:specularTexture,
-    specular:new THREE.Color(0x555555)
-  })
+const specularMap=
+loader.load(
+"https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_specular_2048.jpg"
 );
 
-earthGroup.add(earth);
+const earth=
+new THREE.Mesh(
 
-/* ---------- CLOUDS ---------- */
+new THREE.SphereGeometry(
+1,64,64
+),
 
-const cloudTexture = textureLoader.load(
-  "https://threejs.org/examples/textures/planets/earth_clouds_1024.png"
+new THREE.MeshPhongMaterial({
+
+map:earthMap,
+
+bumpMap:normalMap,
+
+bumpScale:.035,
+
+specularMap:specularMap,
+
+specular:new THREE.Color(
+0x555555
+)
+
+})
+
 );
 
-const clouds = new THREE.Mesh(
-  new THREE.SphereGeometry(1.009,64,64),
-  new THREE.MeshPhongMaterial({
-    map:cloudTexture,
-    transparent:true,
-    opacity:.36,
-    depthWrite:false
-  })
+earthGroup.add(
+earth
 );
 
-earthGroup.add(clouds);
+/* =========================
+   الغيوم
+========================= */
 
-/* ---------- ATMOSPHERE ---------- */
-
-const atmosphere = new THREE.Mesh(
-  new THREE.SphereGeometry(1.035,64,64),
-  new THREE.MeshBasicMaterial({
-    color:0x3aaeff,
-    transparent:true,
-    opacity:.075,
-    side:THREE.BackSide
-  })
+const cloudMap=
+loader.load(
+"https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_clouds_1024.png"
 );
 
-scene.add(atmosphere);
+const clouds=
+new THREE.Mesh(
 
-/* ---------- STARS ---------- */
+new THREE.SphereGeometry(
+1.008,64,64
+),
 
-const starPositions = [];
+new THREE.MeshPhongMaterial({
 
-for(let i=0;i<2200;i++){
-  const r = 90 + Math.random()*500;
-  const theta = Math.random()*Math.PI*2;
-  const phi = Math.acos(2*Math.random()-1);
+map:cloudMap,
 
-  starPositions.push(
-    r*Math.sin(phi)*Math.cos(theta),
-    r*Math.sin(phi)*Math.sin(theta),
-    r*Math.cos(phi)
-  );
+transparent:true,
+
+opacity:.38,
+
+depthWrite:false
+
+})
+
+);
+
+earthGroup.add(
+clouds
+);
+
+/* =========================
+   النجوم
+========================= */
+
+const starPositions=[];
+
+for(let i=0;i<1800;i++){
+
+const r=
+100+Math.random()*500;
+
+const a=
+Math.random()*Math.PI*2;
+
+const p=
+Math.acos(
+2*Math.random()-1
+);
+
+starPositions.push(
+
+r*Math.sin(p)*Math.cos(a),
+
+r*Math.sin(p)*Math.sin(a),
+
+r*Math.cos(p)
+
+);
+
 }
 
-const starsGeometry = new THREE.BufferGeometry();
+const starGeo=
+new THREE.BufferGeometry();
 
-starsGeometry.setAttribute(
-  "position",
-  new THREE.Float32BufferAttribute(starPositions,3)
+starGeo.setAttribute(
+
+"position",
+
+new THREE.Float32BufferAttribute(
+starPositions,
+3
+)
+
 );
 
-const stars = new THREE.Points(
-  starsGeometry,
-  new THREE.PointsMaterial({
-    color:0xffffff,
-    size:.15,
-    transparent:true,
-    opacity:.8
-  })
+scene.add(
+
+new THREE.Points(
+
+starGeo,
+
+new THREE.PointsMaterial({
+
+color:0xffffff,
+
+size:.15
+
+})
+
+)
+
 );
 
-scene.add(stars);
+/* =========================
+   نقاط المواقع
+========================= */
 
-/* ---------- MARKERS ---------- */
+const markerGroup=
+new THREE.Group();
 
-const markersGroup = new THREE.Group();
-earthGroup.add(markersGroup);
+earthGroup.add(
+markerGroup
+);
+
+function vectorFromLatLon(
+lat,
+lon,
+radius=1.025
+){
+
+const phi=
+(90-lat)*
+Math.PI/180;
+
+const theta=
+(lon+180)*
+Math.PI/180;
+
+return new THREE.Vector3(
+
+-radius*
+Math.sin(phi)*
+Math.cos(theta),
+
+radius*
+Math.cos(phi),
+
+radius*
+Math.sin(phi)*
+Math.sin(theta)
+
+);
+
+}
 
 function clearMarkers(){
-  while(markersGroup.children.length){
-    markersGroup.remove(markersGroup.children[0]);
-  }
+
+while(
+markerGroup.children.length
+){
+
+markerGroup.remove(
+markerGroup.children[0]
+);
+
 }
 
-function latLonToVector3(lat,lon,radius=1.025){
-
-  const phi = (90-lat)*(Math.PI/180);
-  const theta = (lon+180)*(Math.PI/180);
-
-  return new THREE.Vector3(
-    -radius*Math.sin(phi)*Math.cos(theta),
-    radius*Math.cos(phi),
-    radius*Math.sin(phi)*Math.sin(theta)
-  );
 }
 
-function addMarker(lat,lon,color=0x34c6ff,size=.016){
+function addMarker(
+lat,
+lon,
+color=0xffd84a
+){
 
-  const marker = new THREE.Mesh(
-    new THREE.SphereGeometry(size,16,16),
-    new THREE.MeshBasicMaterial({color})
-  );
+const marker=
+new THREE.Mesh(
 
-  marker.position.copy(latLonToVector3(lat,lon,1.025));
+new THREE.SphereGeometry(
+.022,
+16,
+16
+),
 
-  markersGroup.add(marker);
+new THREE.MeshBasicMaterial({
+color
+})
 
-  return marker;
+);
+
+marker.position.copy(
+vectorFromLatLon(
+lat,
+lon
+)
+);
+
+markerGroup.add(
+marker
+);
+
 }
 
-/* ---------- SMOOTH CAMERA ---------- */
+/* =========================
+   حركة الكاميرا
+========================= */
 
-function focusLocation(lat,lon,distance=2.15){
+let cameraMove=null;
 
-  controls.autoRotate = false;
+function goTo(
+lat,
+lon,
+distance=2.05
+){
 
-  const destination = latLonToVector3(lat,lon,distance);
+controls.autoRotate=false;
 
-  focusAnimation = {
-    start:camera.position.clone(),
-    end:destination,
-    started:performance.now(),
-    duration:1200
-  };
-}
+cameraMove={
 
-/* ---------- COUNTRY NAMES ---------- */
+from:
+camera.position.clone(),
 
-const arabicNames = {
-  SYR:"سوريا",
-  NLD:"هولندا",
-  EGY:"مصر",
-  SAU:"السعودية",
-  USA:"الولايات المتحدة",
-  GBR:"المملكة المتحدة",
-  FRA:"فرنسا",
-  DEU:"ألمانيا",
-  TUR:"تركيا",
-  JOR:"الأردن",
-  LBN:"لبنان",
-  IRQ:"العراق",
-  ARE:"الإمارات",
-  QAT:"قطر",
-  KWT:"الكويت",
-  PSE:"فلسطين",
-  MAR:"المغرب",
-  DZA:"الجزائر",
-  TUN:"تونس",
-  LBY:"ليبيا",
-  ESP:"إسبانيا",
-  ITA:"إيطاليا",
-  GRC:"اليونان",
-  CHN:"الصين",
-  JPN:"اليابان",
-  IND:"الهند",
-  BEL:"بلجيكا",
-  CHE:"سويسرا",
-  AUT:"النمسا",
-  SWE:"السويد",
-  NOR:"النرويج",
-  DNK:"الدنمارك",
-  BRA:"البرازيل",
-  ARG:"الأرجنتين",
-  CAN:"كندا",
-  AUS:"أستراليا",
-  RUS:"روسيا"
+to:
+vectorFromLatLon(
+lat,
+lon,
+distance
+),
+
+start:
+performance.now(),
+
+duration:
+1200
+
 };
 
-function countryArabicName(c){
-  return arabicNames[c.cca3] ||
-         c.translations?.ara?.common ||
-         c.name?.common ||
-         "—";
 }
 
-function normalizeText(text=""){
-  return text
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g,"")
-    .trim();
+/* =========================
+   قاعدة احتياطية للدول
+   تعمل حتى لو فشل الإنترنت
+========================= */
+
+const fallbackCountries=[
+
+{
+name:"سوريا",
+english:"Syria",
+capital:"دمشق",
+lat:35,
+lon:38,
+region:"آسيا",
+population:23000000,
+area:185180,
+languages:"العربية",
+currency:"الليرة السورية",
+code:"sy"
+},
+
+{
+name:"هولندا",
+english:"Netherlands",
+capital:"أمستردام",
+lat:52.13,
+lon:5.29,
+region:"أوروبا",
+population:18000000,
+area:41850,
+languages:"الهولندية",
+currency:"اليورو",
+code:"nl"
+},
+
+{
+name:"مصر",
+english:"Egypt",
+capital:"القاهرة",
+lat:26.82,
+lon:30.8,
+region:"أفريقيا",
+population:110000000,
+area:1002450,
+languages:"العربية",
+currency:"الجنيه المصري",
+code:"eg"
+},
+
+{
+name:"السعودية",
+english:"Saudi Arabia",
+capital:"الرياض",
+lat:23.88,
+lon:45.08,
+region:"آسيا",
+population:34000000,
+area:2149690,
+languages:"العربية",
+currency:"الريال السعودي",
+code:"sa"
+},
+
+{
+name:"تركيا",
+english:"Turkey",
+capital:"أنقرة",
+lat:38.96,
+lon:35.24,
+region:"آسيا / أوروبا",
+population:85000000,
+area:783562,
+languages:"التركية",
+currency:"الليرة التركية",
+code:"tr"
+},
+
+{
+name:"ألمانيا",
+english:"Germany",
+capital:"برلين",
+lat:51.16,
+lon:10.45,
+region:"أوروبا",
+population:84000000,
+area:357022,
+languages:"الألمانية",
+currency:"اليورو",
+code:"de"
+},
+
+{
+name:"فرنسا",
+english:"France",
+capital:"باريس",
+lat:46.22,
+lon:2.21,
+region:"أوروبا",
+population:68000000,
+area:551695,
+languages:"الفرنسية",
+currency:"اليورو",
+code:"fr"
+},
+
+{
+name:"الولايات المتحدة",
+english:"United States",
+capital:"واشنطن",
+lat:37.09,
+lon:-95.71,
+region:"أمريكا الشمالية",
+population:340000000,
+area:9833517,
+languages:"الإنجليزية",
+currency:"الدولار",
+code:"us"
+},
+
+{
+name:"اليابان",
+english:"Japan",
+capital:"طوكيو",
+lat:36.2,
+lon:138.25,
+region:"آسيا",
+population:124000000,
+area:377975,
+languages:"اليابانية",
+currency:"الين",
+code:"jp"
+},
+
+{
+name:"الصين",
+english:"China",
+capital:"بكين",
+lat:35.86,
+lon:104.19,
+region:"آسيا",
+population:1400000000,
+area:9596961,
+languages:"الصينية",
+currency:"اليوان",
+code:"cn"
+},
+
+{
+name:"العراق",
+english:"Iraq",
+capital:"بغداد",
+lat:33.22,
+lon:43.67,
+region:"آسيا",
+population:45000000,
+area:438317,
+languages:"العربية والكردية",
+currency:"الدينار العراقي",
+code:"iq"
+},
+
+{
+name:"لبنان",
+english:"Lebanon",
+capital:"بيروت",
+lat:33.85,
+lon:35.86,
+region:"آسيا",
+population:5500000,
+area:10452,
+languages:"العربية",
+currency:"الليرة اللبنانية",
+code:"lb"
+},
+
+{
+name:"الأردن",
+english:"Jordan",
+capital:"عمّان",
+lat:30.58,
+lon:36.23,
+region:"آسيا",
+population:11000000,
+area:89342,
+languages:"العربية",
+currency:"الدينار الأردني",
+code:"jo"
+},
+
+{
+name:"الإمارات",
+english:"United Arab Emirates",
+capital:"أبوظبي",
+lat:23.42,
+lon:53.84,
+region:"آسيا",
+population:10000000,
+area:83600,
+languages:"العربية",
+currency:"الدرهم الإماراتي",
+code:"ae"
+},
+
+{
+name:"إيطاليا",
+english:"Italy",
+capital:"روما",
+lat:41.87,
+lon:12.56,
+region:"أوروبا",
+population:59000000,
+area:301340,
+languages:"الإيطالية",
+currency:"اليورو",
+code:"it"
+},
+
+{
+name:"اليونان",
+english:"Greece",
+capital:"أثينا",
+lat:39.07,
+lon:21.82,
+region:"أوروبا",
+population:10400000,
+area:131957,
+languages:"اليونانية",
+currency:"اليورو",
+code:"gr"
 }
 
-/* ---------- LOAD COUNTRIES ---------- */
+];
 
-fetch(
-  "https://restcountries.com/v3.1/all?fields=name,translations,cca3,capital,region,subregion,population,area,languages,currencies,flags,latlng"
+let countries=[
+...fallbackCountries
+];
+
+let selected=null;
+
+/* =========================
+   محاولة تحميل كل دول العالم
+========================= */
+
+async function loadAllCountries(){
+
+try{
+
+const response=
+await fetch(
+"https://restcountries.com/v3.1/all?fields=name,translations,cca2,capital,region,population,area,languages,currencies,flags,latlng"
+);
+
+if(!response.ok)
+throw new Error();
+
+const data=
+await response.json();
+
+const parsed=
+data
+.filter(c=>c.latlng?.length>=2)
+.map(c=>({
+
+name:
+c.translations?.ara?.common ||
+c.name.common,
+
+english:
+c.name.common,
+
+capital:
+c.capital?.[0] || "—",
+
+lat:
+c.latlng[0],
+
+lon:
+c.latlng[1],
+
+region:
+c.region || "—",
+
+population:
+c.population || 0,
+
+area:
+c.area || 0,
+
+languages:
+Object.values(
+c.languages || {}
+).join("، ") || "—",
+
+currency:
+Object.values(
+c.currencies || {}
+).map(x=>
+x.name
+).join("، ") || "—",
+
+flag:
+c.flags?.svg ||
+c.flags?.png,
+
+code:
+c.cca2?.toLowerCase()
+
+}));
+
+countries=parsed;
+
+$("status").textContent=
+"✅ تم تحميل دول العالم";
+
+}catch(error){
+
+$("status").textContent=
+"⚠️ تعمل النسخة الاحتياطية للدول";
+
+}
+
+}
+
+loadAllCountries();
+
+/* =========================
+   البحث
+========================= */
+
+function normalize(
+text=""
+){
+
+return text
+.toLowerCase()
+.trim();
+
+}
+
+function findCountries(
+query
+){
+
+const q=
+normalize(query);
+
+if(!q)
+return [];
+
+return countries
+.filter(c=>
+
+normalize(
+c.name
+).includes(q)
+
+||
+
+normalize(
+c.english
+).includes(q)
+
 )
-.then(r=>{
-  if(!r.ok) throw new Error("Countries API");
-  return r.json();
-})
-.then(data=>{
-  countries = data;
-  $("loading").style.display="none";
-})
-.catch(err=>{
-  console.error(err);
-  $("loading").innerHTML =
-    "<div><h3>تعذر تحميل بيانات الدول</h3><p>تحقق من الإنترنت ثم حدّث الصفحة.</p></div>";
-});
+.slice(0,12);
 
-/* ---------- SEARCH ---------- */
-
-function findCountries(query){
-
-  const q = normalizeText(query);
-
-  if(!q) return [];
-
-  return countries.filter(c=>{
-
-    const names = [
-      countryArabicName(c),
-      c.name?.common,
-      c.name?.official,
-      c.translations?.ara?.common,
-      c.translations?.ara?.official,
-      c.cca3
-    ];
-
-    return names.some(n =>
-      n && normalizeText(n).includes(q)
-    );
-
-  }).slice(0,12);
 }
 
-function renderSearchResults(list){
+function drawResults(
+list
+){
 
-  if(!list.length){
-    $("results").style.display="none";
-    return;
-  }
+if(!list.length){
 
-  $("results").innerHTML = list.map((c,i)=>`
-    <div class="result" data-index="${countries.indexOf(c)}">
-      <img src="${c.flags?.svg || c.flags?.png || ""}">
-      <div>
-        <b>${countryArabicName(c)}</b>
-        <div class="muted">${c.name.common}</div>
-      </div>
-    </div>
-  `).join("");
+$("results").style.display=
+"none";
 
-  $("results").style.display="block";
+return;
+
 }
 
-$("search").addEventListener("input",e=>{
-  renderSearchResults(findCountries(e.target.value));
-});
+$("results").innerHTML=
+list.map(
+(c,i)=>{
 
-$("search").addEventListener("keydown",e=>{
+const index=
+countries.indexOf(c);
 
-  if(e.key==="Enter"){
+const flag=
+c.flag ||
+`https://flagcdn.com/${c.code}.svg`;
 
-    const found = findCountries($("search").value);
+return`
 
-    if(found.length){
-      selectCountry(found[0]);
-    }
-  }
-});
+<div class="result"
+data-index="${index}">
 
-$("results").addEventListener("click",e=>{
+<img src="${flag}">
 
-  const row = e.target.closest(".result");
+<div>
 
-  if(!row) return;
+<b>${c.name}</b>
 
-  const c = countries[Number(row.dataset.index)];
+<div class="small">
+${c.english}
+</div>
 
-  selectCountry(c);
-});
+</div>
 
-/* ---------- SELECT COUNTRY ---------- */
+</div>
+
+`;
+
+}).join("");
+
+$("results").style.display=
+"block";
+
+}
+
+$("search").oninput=e=>{
+
+drawResults(
+findCountries(
+e.target.value
+)
+);
+
+};
+
+$("search").onkeydown=e=>{
+
+if(
+e.key==="Enter"
+){
+
+const found=
+findCountries(
+$("search").value
+);
+
+if(found.length)
+selectCountry(
+found[0]
+);
+
+}
+
+};
+
+$("results").onclick=e=>{
+
+const item=
+e.target.closest(
+".result"
+);
+
+if(!item)
+return;
+
+selectCountry(
+countries[
+Number(
+item.dataset.index
+)
+]
+);
+
+};
+
+/* =========================
+   اختيار دولة
+========================= */
 
 function selectCountry(c){
 
-  if(!c) return;
+selected=c;
 
-  selectedCountry = c;
+$("search").value=
+c.name;
 
-  $("results").style.display="none";
-  $("search").value = countryArabicName(c);
+$("results").style.display=
+"none";
 
-  const lat = c.latlng?.[0];
-  const lon = c.latlng?.[1];
+clearMarkers();
 
-  if(Number.isFinite(lat) && Number.isFinite(lon)){
+addMarker(
+c.lat,
+c.lon
+);
 
-    clearMarkers();
-    addMarker(lat,lon,0xffd84a,.022);
-    focusLocation(lat,lon,2.05);
-  }
+goTo(
+c.lat,
+c.lon
+);
 
-  $("sidePanel").style.display="block";
+$("info").style.display=
+"block";
 
-  $("flag").src = c.flags?.svg || c.flags?.png || "";
+$("name").textContent=
+c.name;
 
-  $("countryName").textContent =
-    countryArabicName(c);
+$("official").textContent=
+c.english;
 
-  $("official").textContent =
-    c.translations?.ara?.official ||
-    c.name?.official ||
-    "";
+$("capital").textContent=
+c.capital;
 
-  $("capital").textContent =
-    c.capital?.join("، ") || "—";
+$("region").textContent=
+c.region;
 
-  $("region").textContent =
-    c.region || "—";
+$("population").textContent=
+new Intl.NumberFormat(
+"ar"
+).format(
+c.population
+);
 
-  $("population").textContent =
-    new Intl.NumberFormat("ar").format(c.population || 0);
+$("area").textContent=
+new Intl.NumberFormat(
+"ar"
+).format(
+c.area
+)+" كم²";
 
-  $("area").textContent =
-    new Intl.NumberFormat("ar").format(c.area || 0) + " كم²";
+$("languages").textContent=
+c.languages;
 
-  $("languages").textContent =
-    Object.values(c.languages || {}).join("، ") || "—";
+$("currency").textContent=
+c.currency;
 
-  $("currency").textContent =
-    Object.values(c.currencies || {})
-      .map(x => x.name + (x.symbol ? ` (${x.symbol})` : ""))
-      .join("، ") || "—";
+$("flag").src=
+c.flag ||
+`https://flagcdn.com/${c.code}.svg`;
 
-  $("weatherBox").style.display="none";
+$("weather").style.display=
+"none";
 
-  toast("تم تحديد " + countryArabicName(c));
+$("status").textContent=
+"📍 "+c.name;
+
 }
 
-/* ---------- WEATHER ---------- */
+/* =========================
+   الطقس المباشر
+========================= */
 
-function weatherDescription(code){
+function weatherName(
+code
+){
 
-  const map = {
-    0:"سماء صافية",
-    1:"صحو غالبًا",
-    2:"غيوم متفرقة",
-    3:"غائم",
-    45:"ضباب",
-    48:"ضباب متجمد",
-    51:"رذاذ خفيف",
-    53:"رذاذ",
-    55:"رذاذ كثيف",
-    61:"مطر خفيف",
-    63:"مطر",
-    65:"مطر غزير",
-    71:"ثلج خفيف",
-    73:"ثلوج",
-    75:"ثلوج كثيفة",
-    80:"زخات مطر",
-    81:"زخات مطر",
-    82:"زخات قوية",
-    95:"عاصفة رعدية"
-  };
+if(code===0)
+return "سماء صافية ☀️";
 
-  return map[code] || "حالة جوية متغيرة";
+if(code<=3)
+return "غيوم جزئية 🌤️";
+
+if(code<=48)
+return "ضباب 🌫️";
+
+if(code<=55)
+return "رذاذ 🌦️";
+
+if(code<=65)
+return "مطر 🌧️";
+
+if(code<=75)
+return "ثلوج ❄️";
+
+if(code<=82)
+return "زخات مطر 🌧️";
+
+if(code>=95)
+return "عاصفة رعدية ⛈️";
+
+return "طقس متغير";
+
 }
 
-async function loadWeather(){
+async function getWeather(){
 
-  if(!selectedCountry){
-    toast("اختر دولة أولًا");
-    return;
-  }
+if(!selected){
 
-  const lat = selectedCountry.latlng?.[0];
-  const lon = selectedCountry.latlng?.[1];
+$("status").textContent=
+"اختر دولة أولًا";
 
-  if(!Number.isFinite(lat) || !Number.isFinite(lon)){
-    toast("لا تتوفر إحداثيات لهذه الدولة");
-    return;
-  }
+return;
 
-  $("weatherBox").style.display="block";
-  $("weatherBig").textContent="جاري التحميل...";
-
-  try{
-
-    const url =
-      `https://api.open-meteo.com/v1/forecast?latitude=${lat}` +
-      `&longitude=${lon}` +
-      `&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m` +
-      `&timezone=auto`;
-
-    const res = await fetch(url);
-    const data = await res.json();
-    const w = data.current;
-
-    $("weatherBig").textContent =
-      `${Math.round(w.temperature_2m)}°C`;
-
-    $("weatherDesc").textContent =
-      weatherDescription(w.weather_code);
-
-    $("wind").textContent =
-      `💨 ${Math.round(w.wind_speed_10m)} كم/س`;
-
-    $("humidity").textContent =
-      `💧 رطوبة ${w.relative_humidity_2m}%`;
-
-    $("updated").textContent =
-      "مباشر الآن";
-
-  }catch(e){
-
-    console.error(e);
-
-    $("weatherBig").textContent="تعذر التحميل";
-  }
 }
 
-$("weatherBtn").onclick = loadWeather;
+$("weather").style.display=
+"block";
 
-/* ---------- SPEECH ---------- */
+$("temp").textContent=
+"جاري التحميل...";
 
-$("speakBtn").onclick=()=>{
+try{
 
-  if(!selectedCountry) return;
+const url=
 
-  speechSynthesis.cancel();
+`https://api.open-meteo.com/v1/forecast?latitude=${selected.lat}&longitude=${selected.lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`;
 
-  const text =
-    `${countryArabicName(selectedCountry)}. ` +
-    `العاصمة ${selectedCountry.capital?.[0] || ""}. ` +
-    `عدد السكان ${selectedCountry.population || ""}.`;
+const response=
+await fetch(url);
 
-  const speech =
-    new SpeechSynthesisUtterance(text);
+const data=
+await response.json();
 
-  speech.lang="ar";
+const w=
+data.current;
 
-  speechSynthesis.speak(speech);
+$("temp").textContent=
+Math.round(
+w.temperature_2m
+)+"°C";
+
+$("weatherText").textContent=
+weatherName(
+w.weather_code
+);
+
+$("wind").textContent=
+"💨 الرياح: "+
+Math.round(
+w.wind_speed_10m
+)+" كم/س";
+
+$("humidity").textContent=
+"💧 الرطوبة: "+
+w.relative_humidity_2m+
+"%";
+
+}catch(error){
+
+$("temp").textContent=
+"تعذر تحميل الطقس";
+
+}
+
+}
+
+$("weatherButton").onclick=
+getWeather;
+
+/* =========================
+   الصوت
+========================= */
+
+$("speak").onclick=()=>{
+
+if(!selected)
+return;
+
+speechSynthesis.cancel();
+
+const speech=
+new SpeechSynthesisUtterance(
+
+`${selected.name}.
+العاصمة ${selected.capital}.
+عدد السكان تقريبًا ${selected.population}.`
+
+);
+
+speech.lang="ar";
+
+speechSynthesis.speak(
+speech
+);
+
 };
 
-/* ---------- WIKIPEDIA ---------- */
+/* =========================
+   ويكيبيديا
+========================= */
 
-$("wikiBtn").onclick=()=>{
+$("wiki").onclick=()=>{
 
-  if(!selectedCountry) return;
+if(!selected)
+return;
 
-  window.open(
-    "https://ar.wikipedia.org/wiki/" +
-    encodeURIComponent(countryArabicName(selectedCountry)),
-    "_blank"
-  );
+window.open(
+
+"https://ar.wikipedia.org/wiki/"+
+encodeURIComponent(
+selected.name
+),
+
+"_blank"
+
+);
+
 };
 
-/* ---------- SOUND ---------- */
+/* =========================
+   التاريخ
+========================= */
 
-$("soundBtn").onclick=()=>{
-
-  soundEnabled = !soundEnabled;
-
-  $("soundBtn").textContent =
-    soundEnabled ? "🔊" : "🔇";
-};
-
-function beep(){
-
-  if(!soundEnabled) return;
-
-  try{
-
-    const ctx = new AudioContext();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc.frequency.value=620;
-
-    gain.gain.setValueAtTime(.025,ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.1);
-
-    osc.start();
-    osc.stop(ctx.currentTime+.11);
-
-  }catch(e){}
-}
-
-/* ---------- HISTORY DATABASE ---------- */
-
-const historyEvents = [
+const historyEvents=[
 
 {
- year:-9600,
- name:"بدايات الاستقرار بعد العصر الجليدي",
- type:"history",
- lat:36.5,lon:38,
- text:"بدأت جماعات بشرية عديدة بالانتقال تدريجيًا نحو الاستقرار والزراعة."
+year:-10000,
+name:"بدايات الاستقرار والزراعة",
+lat:36.5,
+lon:38,
+text:"بدأ الإنسان في مناطق عديدة بتطوير الزراعة والاستقرار."
 },
 
 {
- year:-7500,
- name:"تشاتال هويوك",
- type:"history",
- lat:37.67,lon:32.83,
- text:"إحدى أقدم المستوطنات الحضرية الكبيرة المعروفة."
+year:-3100,
+name:"توحيد مصر القديمة",
+lat:30,
+lon:31,
+text:"بداية عصر الأسرات في مصر القديمة."
 },
 
 {
- year:-3100,
- name:"توحيد مصر القديمة",
- type:"history",
- lat:30.04,lon:31.24,
- text:"بداية عصر الأسرات المبكرة في مصر."
+year:-2600,
+name:"أهرامات الجيزة",
+lat:29.98,
+lon:31.13,
+text:"عصر بناء أهرامات الجيزة الكبرى."
 },
 
 {
- year:-2600,
- name:"الأهرامات الكبرى",
- type:"history",
- lat:29.979,lon:31.134,
- text:"عصر بناء الأهرامات الكبرى في الجيزة."
+year:-1750,
+name:"بابل",
+lat:32.54,
+lon:44.42,
+text:"إحدى أهم حضارات بلاد الرافدين."
 },
 
 {
- year:-1750,
- name:"بابل القديمة",
- type:"history",
- lat:32.54,lon:44.42,
- text:"من أبرز مراكز حضارة بلاد الرافدين."
+year:-500,
+name:"اليونان القديمة",
+lat:37.98,
+lon:23.72,
+text:"ازدهار أثينا والفلسفة والثقافة اليونانية."
 },
 
 {
- year:-1200,
- name:"العصر الحديدي",
- type:"history",
- lat:34.8,lon:38.9,
- text:"انتشار استخدام الحديد في مناطق واسعة من العالم القديم."
+year:117,
+name:"الإمبراطورية الرومانية",
+lat:41.9,
+lon:12.5,
+text:"بلغت الإمبراطورية الرومانية أقصى اتساعها تقريبًا."
 },
 
 {
- year:-508,
- name:"أثينا والديمقراطية القديمة",
- type:"history",
- lat:37.98,lon:23.72,
- text:"تطور نظام سياسي أثيني أصبح مؤثرًا في التاريخ السياسي."
+year:622,
+name:"الهجرة",
+lat:24.47,
+lon:39.61,
+text:"الهجرة من مكة إلى المدينة وبداية التقويم الهجري."
 },
 
 {
- year:-330,
- name:"الإسكندر المقدوني",
- type:"history",
- lat:31.2,lon:29.9,
- text:"اتساع الإمبراطورية المقدونية من المتوسط حتى آسيا."
+year:762,
+name:"بغداد العباسية",
+lat:33.31,
+lon:44.36,
+text:"تأسيس بغداد وتحولها إلى أحد أهم مراكز العلم والحضارة."
 },
 
 {
- year:117,
- name:"ذروة الإمبراطورية الرومانية",
- type:"history",
- lat:41.9,lon:12.5,
- text:"بلغت الإمبراطورية الرومانية أقصى امتداد إقليمي تقريبًا."
+year:1099,
+name:"الحروب الصليبية",
+lat:31.77,
+lon:35.21,
+text:"مرحلة من الصراعات الكبرى في شرق المتوسط."
 },
 
 {
- year:622,
- name:"الهجرة وبداية التقويم الهجري",
- type:"history",
- lat:24.47,lon:39.61,
- text:"الهجرة إلى المدينة المنورة."
+year:1258,
+name:"دخول المغول إلى بغداد",
+lat:33.31,
+lon:44.36,
+text:"سقوط بغداد في يد المغول."
 },
 
 {
- year:750,
- name:"بداية العصر العباسي",
- type:"history",
- lat:33.31,lon:44.36,
- text:"انتقال مركز الخلافة العباسية لاحقًا إلى بغداد."
+year:1453,
+name:"فتح القسطنطينية",
+lat:41,
+lon:28.97,
+text:"فتح القسطنطينية على يد العثمانيين."
 },
 
 {
- year:1099,
- name:"الحروب الصليبية",
- type:"history",
- lat:31.77,lon:35.21,
- text:"مرحلة من الصراعات والحملات العسكرية في شرق المتوسط."
+year:1492,
+name:"الاتصال الأوروبي بالأمريكتين",
+lat:24,
+lon:-74,
+text:"رحلة كولومبوس عبر المحيط الأطلسي."
 },
 
 {
- year:1258,
- name:"سقوط بغداد بيد المغول",
- type:"history",
- lat:33.31,lon:44.36,
- text:"دخل المغول بغداد سنة 1258."
+year:1789,
+name:"الثورة الفرنسية",
+lat:48.85,
+lon:2.35,
+text:"اندلاع الثورة الفرنسية."
 },
 
 {
- year:1453,
- name:"فتح القسطنطينية",
- type:"history",
- lat:41.01,lon:28.97,
- text:"سيطرة العثمانيين على القسطنطينية."
+year:1914,
+name:"الحرب العالمية الأولى",
+lat:48.2,
+lon:16.37,
+text:"اندلاع الحرب العالمية الأولى."
 },
 
 {
- year:1492,
- name:"رحلة كولومبوس",
- type:"history",
- lat:24,lon:-74,
- text:"بداية اتصال أوروبي واسع ومستمر مع الأمريكتين."
+year:1939,
+name:"الحرب العالمية الثانية",
+lat:52.2,
+lon:21,
+text:"بداية الحرب العالمية الثانية في أوروبا."
 },
 
 {
- year:1789,
- name:"الثورة الفرنسية",
- type:"history",
- lat:48.85,lon:2.35,
- text:"بداية الثورة الفرنسية."
-},
-
-{
- year:1914,
- name:"الحرب العالمية الأولى",
- type:"history",
- lat:48.2,lon:16.37,
- text:"اندلاع الحرب العالمية الأولى."
-},
-
-{
- year:1939,
- name:"الحرب العالمية الثانية",
- type:"history",
- lat:52.23,lon:21.01,
- text:"بداية الحرب العالمية الثانية في أوروبا."
-},
-
-{
- year:1969,
- name:"الإنسان على القمر",
- type:"history",
- lat:28.57,lon:-80.65,
- text:"مهمة أبولو 11 وهبوط الإنسان على سطح القمر."
+year:1969,
+name:"الهبوط على القمر",
+lat:28.57,
+lon:-80.65,
+text:"مهمة أبولو 11."
 }
 
 ];
 
-/* ---------- DINOSAURS ---------- */
+/* =========================
+   الديناصورات
+========================= */
 
-const dinosaurs = [
+const dinosaurs=[
 
 {
- year:-150000000,
- name:"Stegosaurus — ستيغوصور",
- type:"dinosaur",
- lat:39.5,lon:-105.5,
- text:"عاش خلال أواخر العصر الجوراسي."
+name:"Tyrannosaurus rex",
+arabic:"تي ركس",
+years:"قبل نحو 68–66 مليون سنة",
+lat:46,
+lon:-106
 },
 
 {
- year:-68000000,
- name:"Tyrannosaurus rex — تي ركس",
- type:"dinosaur",
- lat:46,lon:-106,
- text:"أحد أشهر الديناصورات اللاحمة في أواخر العصر الطباشيري."
+name:"Velociraptor",
+arabic:"فيلوسيرابتور",
+years:"قبل نحو 75 مليون سنة",
+lat:43,
+lon:104
 },
 
 {
- year:-75000000,
- name:"Velociraptor — فيلوسيرابتور",
- type:"dinosaur",
- lat:43,lon:104,
- text:"ديناصور صغير لاحم عاش في آسيا."
+name:"Spinosaurus",
+arabic:"سبينوصور",
+years:"قبل نحو 100 مليون سنة",
+lat:30,
+lon:-4
 },
 
 {
- year:-150000000,
- name:"Brachiosaurus — براكيوصور",
- type:"dinosaur",
- lat:40,lon:-108,
- text:"ديناصور ضخم طويل العنق من العصر الجوراسي."
+name:"Stegosaurus",
+arabic:"ستيغوصور",
+years:"قبل نحو 150 مليون سنة",
+lat:39.5,
+lon:-105
 },
 
 {
- year:-112000000,
- name:"Spinosaurus — سبينوصور",
- type:"dinosaur",
- lat:30,lon:-4,
- text:"ديناصور لاحم ضخم عاشت أنواع منه في شمال أفريقيا."
-},
-
-{
- year:-100000000,
- name:"Carcharodontosaurus",
- type:"dinosaur",
- lat:26,lon:8,
- text:"مفترس ضخم عاش في شمال أفريقيا خلال العصر الطباشيري."
+name:"Brachiosaurus",
+arabic:"براكيوصور",
+years:"قبل نحو 150 مليون سنة",
+lat:40,
+lon:-108
 }
 
 ];
 
-/* ---------- TIMELINE ---------- */
+/* =========================
+   عرض التاريخ
+========================= */
 
-function formatYear(year){
+function yearName(
+year
+){
 
-  if(year < -1000000){
-    return Math.round(Math.abs(year)/1000000) + " مليون سنة";
-  }
+return year<0
+?
+Math.abs(year)+
+" ق.م"
 
-  if(year < 0){
-    return Math.abs(year) + " ق.م";
-  }
+:
+year+" م";
 
-  return year + " م";
 }
 
-function renderTimeline(){
+function drawHistory(){
 
-  const raw = Number($("year").value);
+const year=
+Number(
+$("timeline").value
+);
 
-  $("yearLabel").textContent =
-    formatYear(raw);
+$("yearText").textContent=
+yearName(
+year
+);
 
-  const tolerance = raw < -5000 ? 1500 : 250;
+const events=
+historyEvents
+.filter(e=>
+Math.abs(
+e.year-year
+)<400
+)
+.sort(
+(a,b)=>
+Math.abs(a.year-year)-
+Math.abs(b.year-year)
+);
 
-  const matches = historyEvents
-    .filter(e=>Math.abs(e.year-raw)<=tolerance)
-    .sort((a,b)=>Math.abs(a.year-raw)-Math.abs(b.year-raw));
+$("events").innerHTML=
 
-  $("events").innerHTML =
-    matches.length
-    ? matches.map((e,i)=>`
-      <div class="event"
-        data-type="history"
-        data-index="${historyEvents.indexOf(e)}">
-        <strong>${formatYear(e.year)} — ${e.name}</strong>
-        <div class="muted">${e.text}</div>
-      </div>
-    `).join("")
-    : `<div class="event">حرّك الخط الزمني لرؤية أحداث قريبة من هذه الفترة.</div>`;
+events.length
+
+?
+
+events.map(
+(e,i)=>`
+
+<div class="event"
+data-lat="${e.lat}"
+data-lon="${e.lon}">
+
+<b>
+${yearName(e.year)}
+—
+${e.name}
+</b>
+
+<div class="small">
+${e.text}
+</div>
+
+</div>
+
+`
+).join("")
+
+:
+
+`<div class="event">
+لا توجد أحداث مضافة لهذه الفترة بعد.
+</div>`;
+
 }
 
-$("year").addEventListener("input",renderTimeline);
+$("timeline").oninput=
+drawHistory;
 
-$("events").addEventListener("click",e=>{
+$("events").onclick=e=>{
 
-  const item = e.target.closest(".event");
+const item=
+e.target.closest(
+".event"
+);
 
-  if(!item || !item.dataset.index) return;
+if(!item)
+return;
 
-  const data =
-    item.dataset.type==="dinosaur"
-    ? dinosaurs[Number(item.dataset.index)]
-    : historyEvents[Number(item.dataset.index)];
+const lat=
+Number(
+item.dataset.lat
+);
 
-  if(!data) return;
+const lon=
+Number(
+item.dataset.lon
+);
 
-  clearMarkers();
-  addMarker(data.lat,data.lon,0xffb52e,.024);
-  focusLocation(data.lat,data.lon,2.15);
+if(
+Number.isFinite(lat)
+&&
+Number.isFinite(lon)
+){
 
-  toast(data.name);
-});
+clearMarkers();
 
-/* ---------- MODES ---------- */
+addMarker(
+lat,
+lon,
+0xffa62e
+);
 
-document.querySelectorAll(".mode").forEach(btn=>{
+goTo(
+lat,
+lon
+);
 
-  btn.onclick=()=>{
-
-    document.querySelectorAll(".mode")
-      .forEach(x=>x.classList.remove("active"));
-
-    btn.classList.add("active");
-
-    currentMode=btn.dataset.mode;
-
-    setMode(currentMode);
-  };
-});
-
-function setMode(mode){
-
-  clearMarkers();
-
-  $("timelinePanel").style.display="none";
-
-  if(mode==="today"){
-
-    controls.autoRotate=true;
-    toast("الوضع الحالي");
-
-  }
-
-  if(mode==="weather"){
-
-    toast("اختر دولة ثم اضغط زر الطقس");
-
-    if(selectedCountry){
-      loadWeather();
-    }
-  }
-
-  if(mode==="history"){
-
-    $("timelinePanel").style.display="block";
-    $("timelineTitle").textContent="🏛️ الحضارات والتاريخ";
-
-    $("year").min=-10000;
-    $("year").max=2026;
-    $("year").step=25;
-    $("year").value=1200;
-
-    renderTimeline();
-
-    historyEvents.forEach(e=>{
-      addMarker(e.lat,e.lon,0xffb52e,.014);
-    });
-  }
-
-  if(mode==="dinosaurs"){
-
-    $("timelinePanel").style.display="block";
-    $("timelineTitle").textContent="🦖 عالم الديناصورات";
-
-    $("year").min=-200000000;
-    $("year").max=-60000000;
-    $("year").step=1000000;
-    $("year").value=-100000000;
-
-    $("yearLabel").textContent="100 مليون سنة";
-
-    $("events").innerHTML = dinosaurs.map((d,i)=>`
-      <div class="event"
-        data-type="dinosaur"
-        data-index="${i}">
-        <strong>🦖 ${d.name}</strong>
-        <div class="muted">${d.text}</div>
-      </div>
-    `).join("");
-
-    dinosaurs.forEach(d=>{
-      addMarker(d.lat,d.lon,0xff5151,.017);
-    });
-
-    toast("وضع الديناصورات");
-  }
 }
 
-/* ---------- HOME ---------- */
-
-$("homeBtn").onclick=()=>{
-
-  focusAnimation=null;
-
-  camera.position.set(0,0,3);
-
-  controls.target.set(0,0,0);
-  controls.autoRotate=true;
-
-  $("search").value="";
-  $("sidePanel").style.display="none";
-  $("timelinePanel").style.display="none";
-
-  clearMarkers();
-
-  currentMode="today";
-
-  document.querySelectorAll(".mode")
-    .forEach(x=>x.classList.remove("active"));
-
-  document.querySelector('[data-mode="today"]')
-    .classList.add("active");
 };
 
-/* ---------- TOAST ---------- */
+/* =========================
+   الأوضاع
+========================= */
 
-let toastTimer;
+document
+.querySelectorAll(
+".mode"
+)
+.forEach(button=>{
 
-function toast(text){
+button.onclick=()=>{
 
-  beep();
+document
+.querySelectorAll(
+".mode"
+)
+.forEach(x=>
+x.classList.remove(
+"active"
+)
+);
 
-  $("toast").textContent=text;
-  $("toast").classList.add("show");
+button.classList.add(
+"active"
+);
 
-  clearTimeout(toastTimer);
+const mode=
+button.dataset.mode;
 
-  toastTimer=setTimeout(()=>{
-    $("toast").classList.remove("show");
-  },1800);
+$("history").style.display=
+"none";
+
+if(mode==="earth"){
+
+controls.autoRotate=true;
+
+clearMarkers();
+
 }
 
-/* ---------- RESIZE ---------- */
+if(mode==="weather"){
 
-addEventListener("resize",()=>{
+if(selected)
+getWeather();
 
-  camera.aspect=innerWidth/innerHeight;
-  camera.updateProjectionMatrix();
+else
+$("status").textContent=
+"اختر دولة ثم افتح الطقس";
 
-  renderer.setSize(innerWidth,innerHeight);
+}
+
+if(mode==="history"){
+
+$("history").style.display=
+"block";
+
+$("historyTitle").textContent=
+"🏛️ الحضارات والتاريخ";
+
+$("timeline").style.display=
+"block";
+
+$("yearText").style.display=
+"inline";
+
+$("events").innerHTML="";
+
+$("timeline").min=
+-10000;
+
+$("timeline").max=
+2026;
+
+$("timeline").step=
+50;
+
+$("timeline").value=
+1200;
+
+drawHistory();
+
+clearMarkers();
+
+historyEvents.forEach(
+e=>
+addMarker(
+e.lat,
+e.lon,
+0xffa62e
+)
+);
+
+}
+
+if(mode==="dino"){
+
+$("history").style.display=
+"block";
+
+$("historyTitle").textContent=
+"🦖 عالم الديناصورات";
+
+$("timeline").style.display=
+"none";
+
+$("yearText").style.display=
+"none";
+
+$("events").innerHTML=
+
+dinosaurs.map(
+d=>`
+
+<div class="event"
+data-lat="${d.lat}"
+data-lon="${d.lon}">
+
+<b>
+🦖 ${d.arabic}
+</b>
+
+<div>
+${d.name}
+</div>
+
+<div class="small">
+${d.years}
+</div>
+
+</div>
+
+`
+).join("");
+
+clearMarkers();
+
+dinosaurs.forEach(
+d=>
+addMarker(
+d.lat,
+d.lon,
+0xff4b4b
+)
+);
+
+}
+
+};
+
 });
 
-/* ---------- ANIMATION ---------- */
+/* =========================
+   زر العودة
+========================= */
 
-function animate(time){
+$("home").onclick=()=>{
 
-  requestAnimationFrame(animate);
+cameraMove=null;
 
-  clouds.rotation.y += .00016;
+camera.position.set(
+0,0,3
+);
 
-  if(focusAnimation){
+controls.target.set(
+0,0,0
+);
 
-    const t =
-      Math.min(
-        (performance.now()-focusAnimation.started) /
-        focusAnimation.duration,
-        1
-      );
+controls.autoRotate=true;
 
-    const smooth =
-      t*t*(3-2*t);
+$("info").style.display=
+"none";
 
-    camera.position.lerpVectors(
-      focusAnimation.start,
-      focusAnimation.end,
-      smooth
-    );
+$("history").style.display=
+"none";
 
-    camera.lookAt(0,0,0);
+$("search").value="";
 
-    if(t>=1){
-      focusAnimation=null;
-    }
-  }
+clearMarkers();
 
-  controls.update();
+};
 
-  renderer.render(scene,camera);
+/* =========================
+   تغيير حجم الشاشة
+========================= */
+
+addEventListener(
+"resize",
+()=>{
+
+camera.aspect=
+innerWidth/
+innerHeight;
+
+camera.updateProjectionMatrix();
+
+renderer.setSize(
+innerWidth,
+innerHeight
+);
+
+}
+);
+
+/* =========================
+   الحركة
+========================= */
+
+function animate(){
+
+requestAnimationFrame(
+animate
+);
+
+clouds.rotation.y+=
+.00018;
+
+if(cameraMove){
+
+const t=
+Math.min(
+
+(
+performance.now()-
+cameraMove.start
+)
+/
+cameraMove.duration,
+
+1
+
+);
+
+const smooth=
+t*t*(3-2*t);
+
+camera.position.lerpVectors(
+
+cameraMove.from,
+
+cameraMove.to,
+
+smooth
+
+);
+
+camera.lookAt(
+0,0,0
+);
+
+if(t>=1)
+cameraMove=null;
+
+}
+
+controls.update();
+
+renderer.render(
+scene,
+camera
+);
+
 }
 
 animate();
+
+/* إخفاء شاشة التحميل مهما حدث */
+
+setTimeout(
+()=>{
+
+$("loading").style.opacity=
+"0";
+
+setTimeout(
+()=>{
+
+$("loading").style.display=
+"none";
+
+},
+500
+);
+
+},
+1800
+);
 
 </script>
 
