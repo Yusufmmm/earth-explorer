@@ -1,103 +1,964 @@
-Skip to content
-Yusufmmm
-earth-explorer
-Repository navigation
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security and quality
-Insights
-Settings
-Files
-Go to file
-t
-T
-index.html
-earth-explorer
-/
-index.html
-in
-main
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Earth Explorer V3</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020611;color:white;font-family:system-ui}#globe{position:fixed;inset:0}.glass{background:#071226e8;border:1px solid #ffffff30;backdrop-filter:blur(12px)}#topbar{position:fixed;z-index:20;top:12px;left:50%;transform:translateX(-50%);width:min(820px,94vw);display:flex;gap:7px}#searchWrap{position:relative;flex:1}#search{width:100%;padding:13px;border-radius:14px;border:1px solid #ffffff30;background:#071226e8;color:white}#results{position:absolute;top:50px;left:0;right:0;display:none;max-height:280px;overflow:auto;border-radius:14px}.result{padding:10px;display:flex;gap:10px;align-items:center}.result img{width:32px;height:21px}.bars{position:fixed;left:50%;transform:translateX(-50%);z-index:20;display:flex;gap:5px;padding:5px;border-radius:14px}.tierbar{top:66px}.modebar{top:112px}.barbtn{border:0;background:transparent;color:white;padding:8px 10px;border-radius:9px}.barbtn.active{background:#168ed9}#panel{position:fixed;left:12px;bottom:12px;z-index:25;width:min(430px,calc(100vw - 24px));max-height:75vh;overflow:auto;padding:14px;border-radius:18px;display:none}.head{display:flex;gap:10px;align-items:center}.head img{width:64px;height:42px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.card{background:#ffffff0b;padding:9px;border-radius:10px}.card b{display:block;color:#69d2ff;font-size:11px}.tabs{display:flex;gap:5px;margin-top:10px;overflow:auto}.tab{border:0;background:#ffffff0d;color:white;padding:8px;border-radius:9px;white-space:nowrap}.tab.active{background:#168ed9}.content{background:#ffffff08;padding:10px;border-radius:10px;margin-top:8px;line-height:1.7}.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.actions button{flex:1;min-width:100px;border:0;border-radius:9px;padding:9px;background:#168ed9;color:white}#weather{display:none;background:#168ed922;padding:10px;border-radius:10px;margin-top:9px}#timelinePanel{position:fixed;right:12px;bottom:12px;z-index:25;width:min(430px,calc(100vw - 24px));padding:14px;border-radius:18px;display:none}.event{background:#ffffff0b;padding:9px;border-radius:9px;margin-top:6px}.overlay{position:fixed;inset:0;z-index:50;background:#000c;display:none;align-items:center;justify-content:center;padding:18px}.modal{width:min(680px,94vw);padding:20px;border-radius:20px;text-align:center}.plans{display:grid;grid-template-columns:1fr 1fr;gap:10px}.plan{background:#ffffff0b;padding:15px;border-radius:14px}.quizAnswer{display:block;width:100%;margin:7px 0;padding:10px;border:1px solid #ffffff20;border-radius:10px;background:#ffffff0b;color:white}#xp{position:fixed;right:12px;bottom:12px;z-index:20;padding:8px 10px;border-radius:11px}#loading{position:fixed;inset:0;z-index:100;background:#020611;display:grid;place-items:center}@media(max-width:700px){.bars{width:94vw;overflow:auto;justify-content:flex-start}.plans{grid-template-columns:1fr}}</style></head><body>
 
-Edit
+<div id="globe"></div>
 
-Preview
-Indent mode
+<div id="topbar">
+<div id="searchWrap">
+<input id="search" placeholder="ابحث عن دولة: سوريا، هولندا، Egypt...">
+<div id="results" class="glass"></div>
+</div>
+<button id="home" class="barbtn glass">⌂</button>
+</div>
 
-Spaces
-Indent size
+<div class="bars tierbar glass">
+<button class="barbtn tier active" data-tier="public">🌍 العامة</button>
+<button class="barbtn tier" data-tier="school">🏫 المدارس</button>
+<button class="barbtn tier" data-tier="university">🎓 الجامعات</button>
+</div>
 
-2
-Line wrap mode
+<div class="bars modebar glass">
+<button class="barbtn mode active" data-mode="earth">🌍 الأرض</button>
+<button class="barbtn mode" data-mode="weather">🌦️ الطقس</button>
+<button class="barbtn mode" data-mode="history">🏛️ الحضارات</button>
+<button class="barbtn mode" data-mode="dino">🦖 الديناصورات</button>
+</div>
 
-No wrap
-Editing index.html file contents
-Selection deleted
-962
-963
-964
-965
-966
-967
-968
-969
-970
-971
-972
-973
-974
-975
-976
-977
-978
-979
-980
-981
-982
-983
-984
-985
-986
-987
-988
-989
-990
-991
-992
-993
-994
-995
-996
-997
-998
-999
-1000
-1001
-1002
-1003
-1004
-1005
-1006
-1007
-1008
-1009
-1010
-1011
-1012
-1013
-1014
-1015
-1016
-1017
-1018
-1019
-1020
-1021
-1022
-1023
+<div id="panel" class="glass">
+<div class="head"><img id="flag"><div><h2 id="name"></h2><div id="english"></div></div></div>
+
+<div class="grid">
+<div class="card"><b>العاصمة</b><span id="capital"></span></div>
+<div class="card"><b>القارة</b><span id="region"></span></div>
+<div class="card"><b>السكان</b><span id="population"></span></div>
+<div class="card"><b>المساحة</b><span id="area"></span></div>
+<div class="card"><b>اللغة</b><span id="language"></span></div>
+<div class="card"><b>العملة</b><span id="currency"></span></div>
+</div>
+
+<div class="tabs">
+<button class="tab active" data-tab="overview">نظرة عامة</button>
+<button class="tab" data-tab="history">التاريخ</button>
+<button class="tab" data-tab="places">المعالم</button>
+<button class="tab" data-tab="culture">الثقافة</button>
+<button class="tab" data-tab="edu">📚 تعليمي</button>
+</div>
+
+<div id="content" class="content"></div>
+
+<div id="weather">
+<div id="temp"></div>
+<div id="weatherText"></div>
+<div id="wind"></div>
+<div id="humidity"></div>
+</div>
+
+<div class="actions">
+<button id="weatherBtn">🌦️ الطقس</button>
+<button id="storyBtn">▶ قصة</button>
+<button id="speakBtn">🔊 استمع</button>
+<button id="quizBtn">🧠 اختبار</button>
+</div>
+</div>
+
+<div id="timelinePanel" class="glass">
+<h3 id="timelineTitle"></h3>
+<span id="yearLabel"></span>
+<input id="timeline" type="range" min="-5000" max="2026" value="1200" step="25" style="width:100%">
+<div id="events"></div>
+</div>
+
+<div id="story" class="overlay">
+<div class="modal glass">
+<div id="storyIcon" style="font-size:70px"></div>
+<h2 id="storyTitle"></h2>
+<p id="storyText"></p>
+<button id="storyNext" class="barbtn glass">التالي</button>
+<button id="storyClose" class="barbtn glass">إغلاق</button>
+</div>
+</div>
+
+<div id="upgrade" class="overlay">
+<div class="modal glass">
+<h2>🚀 ترقية النسخة التعليمية</h2>
+<p>هذه واجهة تجريبية. الدفع الحقيقي سيُربط لاحقًا بخادم آمن.</p>
+<div class="plans">
+<div class="plan">
+<h3>🏫 المدارس</h3>
+<p>اختبارات، دروس، XP، خط زمني موسع</p>
+<button id="schoolDemo" class="barbtn glass">تجربة School</button>
+</div>
+<div class="plan">
+<h3>🎓 الجامعات</h3>
+<p>كل ميزات المدارس + محتوى بحثي متقدم</p>
+<button id="uniDemo" class="barbtn glass">تجربة University</button>
+</div>
+</div>
+<button id="upgradeClose" class="barbtn glass">إغلاق</button>
+</div>
+</div>
+
+<div id="quiz" class="overlay">
+<div class="modal glass">
+<div id="quizBody"></div>
+<button id="quizClose" class="barbtn glass">إغلاق</button>
+</div>
+</div>
+
+<div id="xp" class="glass">🏆 XP: <b id="xpCount">100</b> • <span id="tierName">العامة</span></div>
+<div id="loading">جاري تشغيل Earth Explorer V3...</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+
+<script>
+const $=id=>document.getElementById(id);
+
+let tier='public';
+let xp=100;
+let selected=null;
+let storyIndex=0;
+let quizIndex=0;
+let quizScore=0;
+let cameraMove=null;
+
+const plans={
+public:{name:'العامة',quiz:false,edu:false},
+school:{name:'المدارس',quiz:true,edu:true},
+university:{name:'الجامعات',quiz:true,edu:true}
+};
+
+function setTier(t){
+tier=t;
+document.querySelectorAll('.tier').forEach(b=>b.classList.toggle('active',b.dataset.tier===t));
+$('tierName').textContent=plans[t].name;
+}
+
+function need(f){
+if(plans[tier][f])return true;
+$('upgrade').style.display='flex';
+return false;
+}
+
+/* الكرة الأرضية */
+
+const scene=new THREE.Scene();
+
+const camera=new THREE.PerspectiveCamera(
+45,
+innerWidth/innerHeight,
+.1,
+2000
+);
+
+camera.position.z=3.1;
+
+const renderer=new THREE.WebGLRenderer({antialias:true});
+
+renderer.setSize(innerWidth,innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+
+$('globe').appendChild(renderer.domElement);
+
+const controls=new THREE.OrbitControls(camera,renderer.domElement);
+
+controls.enableDamping=true;
+controls.minDistance=1.4;
+controls.maxDistance=6;
+controls.autoRotate=true;
+controls.autoRotateSpeed=.3;
+
+scene.add(new THREE.AmbientLight(0xffffff,.7));
+
+const sun=new THREE.DirectionalLight(0xffffff,1.2);
+
+sun.position.set(4,3,5);
+
+scene.add(sun);
+
+const group=new THREE.Group();
+
+scene.add(group);
+
+const tl=new THREE.TextureLoader();
+
+const earth=new THREE.Mesh(
+new THREE.SphereGeometry(1,64,64),
+new THREE.MeshPhongMaterial({
+map:tl.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_atmos_2048.jpg'),
+bumpMap:tl.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_normal_2048.jpg'),
+bumpScale:.035,
+specularMap:tl.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_specular_2048.jpg')
+})
+);
+
+group.add(earth);
+
+const clouds=new THREE.Mesh(
+new THREE.SphereGeometry(1.009,64,64),
+new THREE.MeshPhongMaterial({
+map:tl.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_clouds_1024.png'),
+transparent:true,
+opacity:.34
+})
+);
+
+group.add(clouds);
+
+const markerGroup=new THREE.Group();
+
+group.add(markerGroup);
+
+function v(lat,lon,r=1.025){
+
+const p=(90-lat)*Math.PI/180;
+const t=(lon+180)*Math.PI/180;
+
+return new THREE.Vector3(
+-r*Math.sin(p)*Math.cos(t),
+r*Math.cos(p),
+r*Math.sin(p)*Math.sin(t)
+);
+
+}
+
+function clearM(){
+
+while(markerGroup.children.length)
+markerGroup.remove(markerGroup.children[0]);
+
+}
+
+function mark(lat,lon,c=0xffd342){
+
+const m=new THREE.Mesh(
+new THREE.SphereGeometry(.022,16,16),
+new THREE.MeshBasicMaterial({color:c})
+);
+
+m.position.copy(v(lat,lon));
+
+markerGroup.add(m);
+
+}
+
+function fly(lat,lon){
+
+controls.autoRotate=false;
+
+cameraMove={
+a:camera.position.clone(),
+b:v(lat,lon,2.05),
+s:performance.now(),
+d:1200
+};
+
+}
+
+/* البيانات الأساسية الاحتياطية */
+
+const base=[
+{
+name:'سوريا',
+english:'Syria',
+code:'sy',
+lat:35,
+lon:38,
+capital:'دمشق',
+region:'آسيا',
+population:23000000,
+area:185180,
+language:'العربية',
+currency:'الليرة السورية',
+overview:'سوريا دولة في شرق المتوسط وموقعها جعلها ملتقى طرق تاريخيًا.',
+history:'تعاقبت عليها حضارات وممالك كثيرة من العصور القديمة حتى العصور الإسلامية والحديثة.',
+places:'دمشق القديمة، تدمر، قلعة حلب، بصرى، أوغاريت.',
+culture:'تراث متنوع في العمارة والموسيقى والمطبخ والحرف.',
+edu:'قارن بين دمشق وتدمر كمركزين حضريين وتجاريين.',
+story:[
+['🏺','الممالك القديمة','ازدهرت مراكز مثل إبلا وأوغاريت.'],
+['🏛️','العصر الروماني','ازدهرت مدن عديدة وأصبحت تدمر محطة تجارية مهمة.'],
+['🕌','العصور الإسلامية','أصبحت دمشق عاصمة للدولة الأموية.']
+]
+},
+{
+name:'هولندا',
+english:'Netherlands',
+code:'nl',
+lat:52.13,
+lon:5.29,
+capital:'أمستردام',
+region:'أوروبا',
+population:18000000,
+area:41850,
+language:'الهولندية',
+currency:'اليورو',
+overview:'هولندا دولة أوروبية منخفضة الارتفاع تشتهر بإدارة المياه.',
+history:'تطورت كمركز تجاري وبحري مهم.',
+places:'أمستردام، روتردام، لاهاي، أوتريخت، كيندرديك.',
+culture:'الدراجات والفنون والهندسة المائية.',
+edu:'اشرح كيف أثرت الجغرافيا المنخفضة على الهندسة المائية.',
+story:[
+['🌊','بلاد الماء','تاريخ هولندا مرتبط بإدارة المياه.'],
+['⛵','التجارة البحرية','أصبحت قوة تجارية مهمة.']
+]
+},
+{
+name:'مصر',
+english:'Egypt',
+code:'eg',
+lat:26.82,
+lon:30.8,
+capital:'القاهرة',
+region:'أفريقيا',
+population:110000000,
+area:1002450,
+language:'العربية',
+currency:'الجنيه المصري',
+overview:'ارتبط تاريخ مصر بنهر النيل منذ آلاف السنين.',
+history:'نشأت فيها واحدة من أشهر حضارات العالم القديم.',
+places:'أهرامات الجيزة، الأقصر، وادي الملوك، أبو سمبل.',
+culture:'امتزجت فيها التأثيرات المصرية القديمة والمتوسطية والعربية.',
+edu:'اشرح علاقة النيل بقيام الدولة المصرية القديمة.',
+story:[
+['🌊','النيل','وفر الماء والتربة الخصبة.'],
+['🔺','الأهرامات','شهد عصر الدولة القديمة بناء الأهرامات الكبرى.']
+]
+},
+{
+name:'العراق',
+english:'Iraq',
+code:'iq',
+lat:33.22,
+lon:43.67,
+capital:'بغداد',
+region:'آسيا',
+population:45000000,
+area:438317,
+language:'العربية والكردية',
+currency:'الدينار العراقي',
+overview:'العراق في قلب بلاد الرافدين.',
+history:'شهد حضارات سومر وأكد وبابل وآشور، ثم أصبحت بغداد مركزًا علميًا مهمًا.',
+places:'بابل، أور، نينوى، سامراء، بغداد.',
+culture:'تراث غني في الشعر والموسيقى والعمارة.',
+edu:'قارن بين المدينة السومرية وبغداد العباسية.',
+story:[
+['🏺','بلاد الرافدين','ظهرت مدن مبكرة بين دجلة والفرات.'],
+['📚','بغداد','أصبحت مركزًا مهمًا للعلم والترجمة.']
+]
+},
+{
+name:'اليابان',
+english:'Japan',
+code:'jp',
+lat:36.2,
+lon:138.25,
+capital:'طوكيو',
+region:'آسيا',
+population:124000000,
+area:377975,
+language:'اليابانية',
+currency:'الين',
+overview:'اليابان أرخبيل في شرق آسيا يجمع بين تاريخ طويل وتقنية حديثة.',
+history:'شهدت عصور الساموراي والشوغونات ثم تحولات صناعية كبيرة.',
+places:'طوكيو، كيوتو، أوساكا، نارا، جبل فوجي.',
+culture:'الفنون التقليدية والمطبخ والأنمي والتقنية.',
+edu:'تتبع التحول من الشوغونات إلى الدولة الصناعية الحديثة.',
+story:[
+['⚔️','الساموراي','أصبح المحاربون جزءًا مهمًا من النظام السياسي.'],
+['🚄','اليابان الحديثة','تحولت إلى قوة صناعية وتقنية.']
+]
+}
+];
+
+let countries=[...base];
+
+/* تحميل دول العالم */
+
+async function loadCountries(){
+
+try{
+
+const r=await fetch(
+'https://restcountries.com/v3.1/all?fields=name,translations,cca2,capital,region,population,area,languages,currencies,flags,latlng'
+);
+
+const d=await r.json();
+
+const known=new Set(base.map(x=>x.english));
+
+countries=[
+...base,
+...d.filter(c=>
+c.latlng?.length>=2 &&
+!known.has(c.name.common)
+).map(c=>({
+name:c.translations?.ara?.common||c.name.common,
+english:c.name.common,
+code:(c.cca2||'').toLowerCase(),
+lat:c.latlng[0],
+lon:c.latlng[1],
+capital:c.capital?.[0]||'—',
+region:c.region||'—',
+population:c.population||0,
+area:c.area||0,
+language:Object.values(c.languages||{}).join('، ')||'—',
+currency:Object.values(c.currencies||{}).map(x=>x.name).join('، ')||'—',
+flag:c.flags?.svg||c.flags?.png,
+overview:'معلومات عامة عن '+(c.translations?.ara?.common||c.name.common)+'.',
+history:'سيتم توسيع هذا القسم بمصادر موثقة.',
+places:'سيتم إضافة المعالم الموثقة.',
+culture:'سيتم إضافة محتوى ثقافي موثق.',
+edu:'المحتوى التعليمي متاح للخطط التعليمية.',
+story:[
+['🌍',c.translations?.ara?.common||c.name.common,'قصة تمهيدية سيتم توسيعها لاحقًا.']
+]
+}))
+];
+
+}catch(e){
+
+console.warn('تعذر تحميل قاعدة الدول الخارجية، سيتم استخدام البيانات الاحتياطية.');
+
+}
+
+}
+
+loadCountries();
+
+/* البحث */
+
+function norm(x=''){
+return x.toLowerCase().trim();
+}
+
+function find(q){
+
+q=norm(q);
+
+return q
+?countries.filter(c=>
+norm(c.name).includes(q) ||
+norm(c.english).includes(q)
+).slice(0,12)
+:[];
+
+}
+
+function draw(list){
+
+if(!list.length){
+$('results').style.display='none';
+return;
+}
+
+$('results').innerHTML=list.map(c=>`
+<div class="result" data-i="${countries.indexOf(c)}">
+<img src="${c.flag||`https://flagcdn.com/${c.code}.svg`}">
+<div>
+<b>${c.name}</b>
+<div>${c.english}</div>
+</div>
+</div>
+`).join('');
+
+$('results').style.display='block';
+
+}
+
+$('search').oninput=e=>draw(find(e.target.value));
+
+$('search').onkeydown=e=>{
+
+if(e.key==='Enter'){
+
+const c=find($('search').value)[0];
+
+if(c)select(c);
+
+}
+
+};
+
+$('results').onclick=e=>{
+
+const r=e.target.closest('.result');
+
+if(r)select(countries[+r.dataset.i]);
+
+};
+
+/* اختيار دولة */
+
+function select(c){
+
+selected=c;
+
+$('results').style.display='none';
+$('search').value=c.name;
+
+clearM();
+mark(c.lat,c.lon);
+fly(c.lat,c.lon);
+
+$('panel').style.display='block';
+
+$('flag').src=c.flag||`https://flagcdn.com/${c.code}.svg`;
+
+$('name').textContent=c.name;
+$('english').textContent=c.english;
+$('capital').textContent=c.capital;
+$('region').textContent=c.region;
+
+$('population').textContent=
+new Intl.NumberFormat('ar').format(c.population||0);
+
+$('area').textContent=
+new Intl.NumberFormat('ar').format(c.area||0)+' كم²';
+
+$('language').textContent=c.language;
+$('currency').textContent=c.currency;
+
+$('weather').style.display='none';
+
+openTab('overview');
+
+xp+=10;
+
+$('xpCount').textContent=xp;
+
+}
+
+function openTab(t){
+
+document.querySelectorAll('.tab').forEach(
+b=>b.classList.toggle('active',b.dataset.tab===t)
+);
+
+if(!selected)return;
+
+if(t==='edu'&&!need('edu'))return;
+
+const m={
+overview:selected.overview,
+history:selected.history,
+places:selected.places,
+culture:selected.culture,
+edu:selected.edu
+};
+
+$('content').textContent=m[t]||'';
+
+}
+
+document.querySelectorAll('.tab').forEach(
+b=>b.onclick=()=>openTab(b.dataset.tab)
+);
+
+/* الطقس */
+
+async function weather(){
+
+if(!selected)return;
+
+$('weather').style.display='block';
+$('temp').textContent='جاري التحميل...';
+
+try{
+
+const u=
+`https://api.open-meteo.com/v1/forecast?latitude=${selected.lat}&longitude=${selected.lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`;
+
+const d=await (await fetch(u)).json();
+
+const w=d.current;
+
+$('temp').textContent=
+Math.round(w.temperature_2m)+'°C';
+
+$('weatherText').textContent=
+w.weather_code===0
+?'سماء صافية ☀️'
+:w.weather_code<=3
+?'غيوم جزئية 🌤️'
+:w.weather_code<=65
+?'مطر 🌧️'
+:'طقس متغير';
+
+$('wind').textContent=
+'💨 '+Math.round(w.wind_speed_10m)+' كم/س';
+
+$('humidity').textContent=
+'💧 '+w.relative_humidity_2m+'%';
+
+}catch(e){
+
+$('temp').textContent='تعذر تحميل الطقس';
+
+}
+
+}
+
+$('weatherBtn').onclick=weather;
+
+/* القراءة الصوتية */
+
+$('speakBtn').onclick=()=>{
+
+if(!selected)return;
+
+speechSynthesis.cancel();
+
+const s=
+new SpeechSynthesisUtterance(
+selected.name+'. '+selected.overview
+);
+
+s.lang='ar';
+
+speechSynthesis.speak(s);
+
+};
+
+/* القصص */
+
+$('storyBtn').onclick=()=>{
+
+if(!selected)return;
+
+storyIndex=0;
+
+$('story').style.display='flex';
+
+renderStory();
+
+};
+
+function renderStory(){
+
+const s=selected.story[storyIndex];
+
+$('storyIcon').textContent=s[0];
+$('storyTitle').textContent=s[1];
+$('storyText').textContent=s[2];
+
+}
+
+$('storyNext').onclick=()=>{
+
+storyIndex=
+(storyIndex+1)%selected.story.length;
+
+renderStory();
+
+};
+
+$('storyClose').onclick=()=>{
+
+$('story').style.display='none';
+
+};
+
+/* التاريخ */
+
+const hist=[
+{year:-3100,name:'توحيد مصر القديمة',lat:30,lon:31,text:'بداية عصر الأسرات.'},
+{year:-1750,name:'بابل القديمة',lat:32.54,lon:44.42,text:'ازدهار بابل.'},
+{year:-500,name:'أثينا الكلاسيكية',lat:37.98,lon:23.72,text:'ازدهار الفلسفة اليونانية.'},
+{year:117,name:'ذروة روما',lat:41.9,lon:12.5,text:'اتساع الإمبراطورية الرومانية.'},
+{year:622,name:'الهجرة',lat:24.47,lon:39.61,text:'حدث محوري في التاريخ الإسلامي.'},
+{year:762,name:'تأسيس بغداد',lat:33.31,lon:44.36,text:'مركز مهم للعلم والثقافة.'},
+{year:1258,name:'سقوط بغداد بيد المغول',lat:33.31,lon:44.36,text:'دخول المغول بغداد.'},
+{year:1453,name:'فتح القسطنطينية',lat:41.01,lon:28.97,text:'تحول سياسي كبير.'},
+{year:1789,name:'الثورة الفرنسية',lat:48.85,lon:2.35,text:'حدث سياسي مهم.'},
+{year:1939,name:'الحرب العالمية الثانية',lat:52.23,lon:21.01,text:'اندلاع الحرب في أوروبا.'}
+];
+
+function yn(y){
+
+return y<0
+?Math.abs(y)+' ق.م'
+:y+' م';
+
+}
+
+function drawTimeline(){
+
+const y=+$('timeline').value;
+
+$('yearLabel').textContent=yn(y);
+
+const m=hist.filter(
+e=>Math.abs(e.year-y)<=350
+);
+
+$('events').innerHTML=
+m.length
+?m.map(e=>`
+<div class="event"
+data-lat="${e.lat}"
+data-lon="${e.lon}">
+<b>${yn(e.year)} — ${e.name}</b>
+<div>${e.text}</div>
+</div>
+`).join('')
+:'<div class="event">حرّك الخط الزمني.</div>';
+
+}
+
+$('timeline').oninput=drawTimeline;
+
+$('events').onclick=e=>{
+
+const i=e.target.closest('.event');
+
+if(!i)return;
+
+const lat=+i.dataset.lat;
+const lon=+i.dataset.lon;
+
+if(Number.isFinite(lat)){
+
+clearM();
+
+mark(lat,lon,0xffa52e);
+
+fly(lat,lon);
+
+}
+
+};
+
+/* الديناصورات */
+
+const dinos=[
+['تي ركس','قبل 68–66 مليون سنة',46,-106],
+['فيلوسيرابتور','قبل 75 مليون سنة',43,104],
+['سبينوصور','قبل 100 مليون سنة',30,-4],
+['ستيغوصور','قبل 150 مليون سنة',39.5,-105]
+];
+
+/* أوضاع الخريطة */
+
+document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>{
+
+document.querySelectorAll('.mode').forEach(
+x=>x.classList.remove('active')
+);
+
+b.classList.add('active');
+
+$('timelinePanel').style.display='none';
+
+if(b.dataset.mode==='earth'){
+
+clearM();
+
+controls.autoRotate=true;
+
+}
+
+if(b.dataset.mode==='weather'){
+
+if(selected)weather();
+
+}
+
+if(b.dataset.mode==='history'){
+
+$('timelinePanel').style.display='block';
+
+$('timelineTitle').textContent=
+'🏛️ الحضارات والتاريخ';
+
+$('timeline').style.display='block';
+
+$('yearLabel').style.display='inline';
+
+drawTimeline();
+
+clearM();
+
+hist.forEach(
+e=>mark(e.lat,e.lon,0xffa52e)
+);
+
+}
+
+if(b.dataset.mode==='dino'){
+
+$('timelinePanel').style.display='block';
+
+$('timelineTitle').textContent=
+'🦖 عالم الديناصورات';
+
+$('timeline').style.display='none';
+
+$('yearLabel').style.display='none';
+
+$('events').innerHTML=
+dinos.map(d=>`
+<div class="event"
+data-lat="${d[2]}"
+data-lon="${d[3]}">
+<b>🦖 ${d[0]}</b>
+<div>${d[1]}</div>
+</div>
+`).join('');
+
+clearM();
+
+dinos.forEach(
+d=>mark(d[2],d[3],0xff5050)
+);
+
+}
+
+});
+
+/* الاختبارات */
+
+const qs=[
+{
+q:'ما العامل الجغرافي الذي أثّر بقوة على مصر القديمة؟',
+a:['نهر النيل','جبال الألب','المحيط الهادئ'],
+c:0
+},
+{
+q:'أي مدينة أصبحت مركزًا للعلم في العصر العباسي؟',
+a:['بغداد','روما','طوكيو'],
+c:0
+}
+];
+
+function showQ(){
+
+const q=qs[quizIndex];
+
+$('quizBody').innerHTML=`
+<h2>${q.q}</h2>
+${q.a.map((x,i)=>`
+<button class="quizAnswer" data-a="${i}">
+${x}
+</button>
+`).join('')}
+`;
+
+}
+
+$('quizBtn').onclick=()=>{
+
+if(!need('quiz'))return;
+
+quizIndex=0;
+quizScore=0;
+
+$('quiz').style.display='flex';
+
+showQ();
+
+};
+
+$('quizBody').onclick=e=>{
+
+const b=e.target.closest('.quizAnswer');
+
+if(!b)return;
+
+if(+b.dataset.a===qs[quizIndex].c){
+
+quizScore++;
+
+xp+=20;
+
+$('xpCount').textContent=xp;
+
+}
+
+quizIndex++;
+
+if(quizIndex>=qs.length){
+
+$('quizBody').innerHTML=
+`<h2>🏆 النتيجة ${quizScore}/${qs.length}</h2>`;
+
+}else{
+
+showQ();
+
+}
+
+};
+
+$('quizClose').onclick=()=>{
+
+$('quiz').style.display='none';
+
+};
+
+/* الخطط */
+
+document.querySelectorAll('.tier').forEach(b=>b.onclick=()=>{
+
+if(b.dataset.tier==='public'){
+
+setTier('public');
+
+}else{
+
+$('upgrade').style.display='flex';
+
+}
+
+});
+
+$('schoolDemo').onclick=()=>{
+
+setTier('school');
+
+$('upgrade').style.display='none';
+
+};
+
+$('uniDemo').onclick=()=>{
+
+setTier('university');
+
+$('upgrade').style.display='none';
+
+};
+
+$('upgradeClose').onclick=()=>{
+
+$('upgrade').style.display='none';
+
+};
+
+/* الرئيسية */
+
+$('home').onclick=()=>{
+
+camera.position.set(0,0,3.1);
+
+controls.target.set(0,0,0);
+
+controls.autoRotate=true;
+
+$('panel').style.display='none';
+
+$('timelinePanel').style.display='none';
+
+clearM();
+
+};
+
+/* تغيير حجم الشاشة */
+
+addEventListener('resize',()=>{
+
+camera.aspect=
+innerWidth/innerHeight;
+
 camera.updateProjectionMatrix();
 
 renderer.setSize(
@@ -160,6 +1021,3 @@ $('loading').style.display='none';
 </script>
 </body>
 </html>
-Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
-Editing earth-explorer/index.html at main · Yusufmmm/earth-explorer
-انتقل إلى المحتوى Yusufmmm Earth-explorer مستودع التنقل رمز المشكلات طلبات السحب الإجراءات المشروعات Wiki الأمان والجودة إعدادات الرؤى الملفات t T Index.html Earth-Explorer / بشكل رئيسي تحرير معاينة وضع المسافة البادئة حجم المسافة البادئة وضع التفاف الخط تحرير محتويات ملف Index.html تم حذف التحديد 962 963 964 965 966 967 968 969 970 971 972 973 974 975 976 977 978 979 980 981 982 983 984 985 986 987 988 989 990 991 992 993 994 995 996 997 998 999 1000 1001 1002 1003 1004 1005 1006 1007 1008 1009 1010 1011 1012 1013 1014 1015 1016 1017 1018 1019 1020 1021 1022 1023 image.updateProjectionMatrix(); renderer.setSize(innerWidth,InnerHeight); }); /*حركة */ function anim(){ requestAnimationFrame(anim); clouds.rotation.y+=.00018; if(cameraMove){ const t= Math.min( (performance.now()-cameraMove.s) /cameraMove.d, 1 ); const e= t*t*(3-2*t); Camera.position.lerpVectors(cameraMove.a,cameraMove.b,e ); الكاميرا.lookAt(0,0,0); if(t>=1) CameraMove=null; } controls.update(); renderer.render(المشهد، الكاميرا)؛ } أنيم(); setTimeout(()=>{ $('loading').style.display='none'; },1600); </script> </body> </html> استخدم Control + Shift + m لتبديل التركيز على مفتاح tab. وبدلاً من ذلك، استخدم esc ثم tab للانتقال إلى العنصر التفاعلي التالي في الصفحة.
